@@ -1,0 +1,15 @@
+<div class="card h-100 border-0 shadow-sm stats-card">
+  <div class="card-body">
+    <div class="d-flex align-items-center">
+      <div class="flex-shrink-0">
+        <div class="bg-opacity-10 rounded-circle p-3" [ngStyle]="{'background-color': bgColor}">
+          <i class="bi {{icon}} fs-5" [ngStyle]="{'color': iconColor}"></i>
+        </div>
+      </div>
+      <div class="flex-grow-1 ms-2">
+        <h6 class="card-subtitle text-muted">{{title}}</h6>
+        <h3 class="card-title">{{value}}</h3>
+      </div>
+    </div>
+  </div>
+</div>

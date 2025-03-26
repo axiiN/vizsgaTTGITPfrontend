@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light app-bar">
+  <div class="container-fluid">
+    <button class="navbar-toggler sidebar-toggle" type="button" (click)="onToggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+    
+    <div class="navbar-brand page-title">
+      <h4 class="mb-0">{{ title }}</h4>
+    </div>
+    
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Additional navbar items can go here -->
+      </ul>
+      
+      <div class="d-flex">
+        <!-- Theme toggle -->
+        <div class="nav-item me-3">
+          <app-theme-toggle></app-theme-toggle>
+        </div>
+        
+        <!-- Notification icon -->
+        <div class="nav-item dropdown me-3">
+          <a class="nav-link dropdown-toggle" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+            <li><div class="dropdown-item">No new notifications</div></li>
+          </ul>
+        </div>
+        
+        <!-- User profile dropdown -->
+        <div class="nav-item dropdown" *ngIf="user">
+          <a class="nav-link dropdown-toggle user-dropdown" href="#" id="userProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="d-none d-md-inline me-1">{{ user.displayName || user.email }}</span>
+            <i class="bi bi-person-circle"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userProfileDropdown">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav> 

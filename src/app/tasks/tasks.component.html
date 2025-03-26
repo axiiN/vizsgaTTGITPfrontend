@@ -1,0 +1,350 @@
+<!-- Main container with padding -->
+<div class="container-fluid py-4">
+  <!-- Header Section with Background -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card border-0" style="background-color: var(--sandy-primary);">
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h2 class="mb-2 text-white">My Tasks</h2>
+              <p class="mb-0 text-white">Manage your tasks and boost your productivity</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="bi bi-plus-circle me-2"></i>Add New Task
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="row mb-3">
+    <!-- Total Tasks Card -->
+    <div class="col-md-3 col-sm-6 mb-2">
+      <app-stat-card 
+        title="Total Tasks" 
+        [value]="tasksList.length" 
+        icon="bi-list-check" 
+        bgColor="rgba(244, 164, 96, 0.2)" 
+        iconColor="var(--sandy-primary)">
+      </app-stat-card>
+    </div>
+
+    <!-- Completed Tasks Card -->
+    <div class="col-md-3 col-sm-6 mb-2">
+      <app-stat-card 
+        title="Completed" 
+        [value]="getCompletedTasksCount()" 
+        icon="bi-check2-all" 
+        bgColor="rgba(233, 150, 122, 0.2)" 
+        iconColor="var(--sandy-secondary)">
+      </app-stat-card>
+    </div>
+
+    <!-- Due Today Card -->
+    <div class="col-md-3 col-sm-6 mb-2">
+      <app-stat-card 
+        title="Due Today" 
+        [value]="getDueTasksCount()" 
+        icon="bi-calendar-date" 
+        bgColor="rgba(210, 180, 140, 0.2)" 
+        iconColor="var(--sandy-primary-dark)">
+      </app-stat-card>
+    </div>
+
+    <!-- Overdue Card -->
+    <div class="col-md-3 col-sm-6 mb-2">
+      <app-stat-card 
+        title="Overdue" 
+        [value]="getOverdueTasksCount()" 
+        icon="bi-exclamation-circle" 
+        bgColor="rgba(184, 115, 51, 0.2)" 
+        iconColor="var(--sandy-accent)">
+      </app-stat-card>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="row">
+    <!-- Tasks List -->
+    <div class="col-lg-8 mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="card-title mb-0">My Tasks</h5>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="bi bi-plus-circle me-1"></i> Add Task
+              </button>
+              <div class="btn-group">
+                <button class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'all'" (click)="filterTasks('all')">All</button>
+                <button class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'today'" (click)="filterTasks('today')">Today</button>
+                <button class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'week'" (click)="filterTasks('week')">Week</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Loading indicator -->
+          <div *ngIf="isLoading" class="text-center p-5">
+            <div class="spinner-border" role="status" style="color: var(--sandy-primary);">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading tasks...</p>
+          </div>
+          
+          <!-- No Tasks Message -->
+          <div *ngIf="!isLoading && getFilteredTasks().length === 0" class="text-center p-5">
+            <i class="bi bi-list-check text-muted" style="font-size: 3rem;"></i>
+            <h5 class="mt-3">No tasks found</h5>
+            <p class="text-muted">
+              <ng-container *ngIf="tasksList.length === 0">Start by adding a new task using the button above.</ng-container>
+              <ng-container *ngIf="tasksList.length > 0">No tasks match the current filter.</ng-container>
+            </p>
+          </div>
+          
+          <!-- List group for tasks -->
+          <div *ngIf="!isLoading" class="list-group">
+            <div *ngFor="let task of getFilteredTasks()" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0 mb-2">
+              <div class="d-flex align-items-center">
+                <div class="form-check">
+                  <input 
+                    class="form-check-input" 
+                    type="checkbox" 
+                    [checked]="task.completed"
+                    (change)="toggleTaskCompletion(task)"
+                    id="task{{task.id}}">
+                  <label class="form-check-label" for="task{{task.id}}">
+                    <i [class]="'bi ' + getPriorityIcon(task.priority) + ' me-2'"></i>
+                    <span [class.text-decoration-line-through]="task.completed">{{task.name}}</span>
+                  </label>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <span class="badge me-2" [ngClass]="getPriorityBadgeClass(task.priority)">{{task.priority}}</span>
+                <span class="badge bg-secondary rounded-pill me-2">{{formatDate(task.dueDate)}}</span>
+                <div class="dropdown">
+                  <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" (click)="openEditModal(task)" style="cursor: pointer;"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" (click)="deleteTask(task.id!)" style="cursor: pointer;"><i class="bi bi-trash me-2"></i>Delete</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar with Additional Info -->
+    <div class="col-lg-4">
+      <!-- Upcoming Tasks Card -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Upcoming Tasks</h5>
+          <div *ngIf="isLoading" class="text-center p-3">
+            <div class="spinner-border spinner-border-sm" role="status" style="color: var(--sandy-primary);">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <div *ngIf="!isLoading && getUpcomingTasks().length === 0" class="text-center p-3">
+            <p class="text-muted mb-0">No upcoming tasks</p>
+          </div>
+          <div *ngIf="!isLoading">
+            <div class="d-flex align-items-center mb-2" *ngFor="let task of getUpcomingTasks()">
+              <div class="flex-shrink-0">
+                <div class="upcoming-task-icon" [ngStyle]="{'background-color': task.priority === 'high' ? 'rgba(184, 115, 51, 0.2)' : task.priority === 'medium' ? 'rgba(244, 164, 96, 0.2)' : 'rgba(250, 206, 160, 0.2)'}">
+                  <i class="bi" [ngClass]="getPriorityIcon(task.priority)" [ngStyle]="{'color': task.priority === 'high' ? 'var(--sandy-accent)' : task.priority === 'medium' ? 'var(--sandy-primary)' : 'var(--sandy-primary-light)'}"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-2">
+                <h6 class="upcoming-task-title">{{task.name}}</h6>
+                <small class="upcoming-task-date">{{getRelativeDueDate(task.dueDate)}}</small>
+              </div>
+              <span class="badge upcoming-task-badge" [ngClass]="getPriorityBadgeClass(task.priority)">{{task.priority}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Task Card -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Quick Task</h5>
+          <div class="mb-3">
+            <input
+              class="form-control quick-note-input mb-2"
+              type="text"
+              placeholder="Task name"
+              [(ngModel)]="quickTaskName"
+              name="quickTaskName"
+            />
+            <select 
+              class="form-control quick-note-input mb-2"
+              [(ngModel)]="quickTaskPriority"
+              name="quickTaskPriority"
+            >
+              <option value="" disabled selected>Select priority</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+            <input
+              type="date"
+              class="form-control quick-note-input"
+              [(ngModel)]="quickTaskDueDate"
+              name="quickTaskDueDate"
+            />
+          </div>
+          <button class="btn btn-primary w-100" (click)="addQuickTask()">
+            <i class="bi bi-plus-circle me-2"></i>Add Task
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom-color: var(--sandy-light);">
+        <h5 class="modal-title">Add New Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form #modalForm="ngForm">
+          <div class="mb-3">
+            <label for="taskName" class="form-label">Task Name</label>
+            <input 
+              type="text" 
+              class="form-control note-form-control" 
+              id="taskName" 
+              placeholder="e.g., Project Review"
+              [(ngModel)]="modalTaskName"
+              name="modalTaskName"
+              required
+            >
+          </div>
+          <div class="mb-3">
+            <label for="taskPriority" class="form-label">Priority</label>
+            <select 
+              class="form-select note-form-control" 
+              id="taskPriority"
+              [(ngModel)]="modalTaskPriority"
+              name="modalTaskPriority"
+              required
+            >
+              <option value="" disabled selected>Select priority</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="dueDate" class="form-label">Due Date</label>
+            <input 
+              type="date" 
+              class="form-control note-form-control" 
+              id="dueDate"
+              [(ngModel)]="modalTaskDueDate"
+              name="modalTaskDueDate"
+              required
+            >
+          </div>
+          <div class="mb-3">
+            <label for="taskDescription" class="form-label">Description (Optional)</label>
+            <textarea 
+              class="form-control note-form-control" 
+              id="taskDescription" 
+              rows="3" 
+              placeholder="Add notes or details about this task..."
+              [(ngModel)]="modalTaskDescription"
+              name="modalTaskDescription"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border-top-color: var(--sandy-light);">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addModalTask()">Save Task</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Task Modal -->
+<div class="modal fade" id="editTaskModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="border-bottom-color: var(--sandy-light);">
+        <h5 class="modal-title">Edit Task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm" *ngIf="editingTask">
+          <div class="mb-3">
+            <label for="editTaskName" class="form-label">Task Name</label>
+            <input 
+              type="text" 
+              class="form-control note-form-control" 
+              id="editTaskName" 
+              placeholder="Task name"
+              [(ngModel)]="editingTask.name"
+              name="editTaskName"
+              required
+            >
+          </div>
+          <div class="mb-3">
+            <label for="editTaskPriority" class="form-label">Priority</label>
+            <select 
+              class="form-select note-form-control" 
+              id="editTaskPriority"
+              [(ngModel)]="editingTask.priority"
+              name="editTaskPriority"
+              required
+            >
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="editDueDate" class="form-label">Due Date</label>
+            <input 
+              type="date" 
+              class="form-control note-form-control" 
+              id="editDueDate"
+              [(ngModel)]="editingTask.dueDate"
+              name="editDueDate"
+              required
+            >
+          </div>
+          <div class="mb-3">
+            <label for="editTaskDescription" class="form-label">Description (Optional)</label>
+            <textarea 
+              class="form-control note-form-control" 
+              id="editTaskDescription" 
+              rows="3" 
+              placeholder="Add notes or details about this task..."
+              [(ngModel)]="editingTask.description"
+              name="editTaskDescription"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border-top-color: var(--sandy-light);">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveEditTask()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

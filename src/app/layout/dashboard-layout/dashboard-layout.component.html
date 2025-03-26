@@ -1,0 +1,15 @@
+<div class="dashboard-layout" [class.sidebar-collapsed]="sidebarCollapsed">
+  <div class="sidebar-container" [class.collapsed]="sidebarCollapsed">
+    <app-sidebar [user]="user" [pageTitle]="pageTitle"></app-sidebar>
+  </div>
+  
+  <div class="main-content">
+    <div class="mobile-toggle-btn" (click)="toggleSidebar()">
+      <i class="bi" [ngClass]="sidebarCollapsed ? 'bi-list' : 'bi-x'"></i>
+    </div>
+    
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> 

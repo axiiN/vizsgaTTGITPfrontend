@@ -1,0 +1,75 @@
+<div class="auth-container">
+  <div class="theme-toggle-position">
+    <app-theme-toggle></app-theme-toggle>
+  </div>
+  <div class="auth-card">
+    <div class="auth-logo">
+      <i class="bi bi-shield-lock"></i>
+      <h4>Life Tracker</h4>
+    </div>
+    
+    <div class="auth-header">
+      <h2>Login</h2>
+      <p>Welcome back!</p>
+    </div>
+    
+    <form class="auth-form form-appear" (ngSubmit)="login()">
+      <div class="form-group">
+        <input
+          [(ngModel)]="email"
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          placeholder="Email address"
+          autocomplete="email"
+          required
+        />
+        <div *ngIf="errorMessages.email" class="error-message">
+          {{ errorMessages.email }}
+        </div>
+      </div>
+      
+      <div class="form-group password-field">
+        <input
+          [(ngModel)]="password"
+          [type]="showPassword ? 'text' : 'password'"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Password"
+          autocomplete="current-password"
+          required
+        />
+        <span class="password-toggle" (click)="togglePasswordVisibility()">
+          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+        </span>
+        <div *ngIf="errorMessages.password" class="error-message">
+          {{ errorMessages.password }}
+        </div>
+      </div>
+      
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Login
+      </button>
+      
+      <div *ngIf="errorMessages.general" class="error-message text-center mt-3">
+        {{ errorMessages.general }}
+      </div>
+    </form>
+    
+    <div class="auth-footer">
+      <p>
+        Don't have an account?
+        <span class="toggle-link" (click)="navigateToRegister()">
+          Register now
+        </span>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,357 @@
+/* Sandy Brown theme color variables */
+:host {
+  --sandy-primary: #f4a460;
+  --sandy-primary-dark: #e07f34;
+  --sandy-primary-light: #facea0;
+  --sandy-secondary: #e9967a;
+  --sandy-accent: #b87333;
+  --sandy-light: #ffe4c4;
+  --sandy-bg: #fff8dc;
+}
+
+.dark-mode:host {
+  --sandy-primary: #f4a460;
+  --sandy-primary-dark: #e07f34;
+  --sandy-primary-light: #facea0;
+  --sandy-secondary: #e9967a;
+  --sandy-accent: #b87333;
+  --sandy-light: #ffe4c4;
+  --sandy-bg: #3d2e1a;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* List item styling with consistent border-radius and padding */
+.list-group-item {
+  border-radius: 8px !important;
+  background-color: var(--bg-secondary);
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Ensure checkbox alignment is consistent */
+.form-check {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  width: 18px;
+  height: 18px;
+}
+
+.form-check-input:checked {
+  background-color: var(--sandy-primary);
+  border-color: var(--sandy-primary);
+}
+
+.form-check-label {
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.5em 0.75em;
+  border-radius: 20px;
+}
+
+.dropdown-item i {
+  width: 1rem;
+}
+
+/* Progress bar customization */
+.progress {
+  background-color: var(--bg-tertiary);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+/* Icon background effects */
+.bg-opacity-10 {
+  background-color: var(--bg-secondary);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sandy-primary);
+  border-radius: 4px;
+}
+
+/* Quick form controls with consistent styling */
+.quick-note-input {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  height: auto;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.quick-note-input::placeholder {
+  color: var(--placeholder-color);
+  opacity: 0.8;
+}
+
+.dark-mode .quick-note-input {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.dark-mode .quick-note-input::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+
+/* Modal form controls with consistent sizing */
+.note-form-control {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  height: auto;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.note-form-control::placeholder {
+  color: var(--placeholder-color);
+  opacity: 0.8;
+}
+
+.dark-mode .note-form-control {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.dark-mode .note-form-control::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+
+select.note-form-control,
+select.quick-note-input {
+  appearance: auto;
+  padding-right: 2rem;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+}
+
+/* Unified input focus states */
+.modal-body input,
+.modal-body textarea,
+.modal-body select,
+.quick-note-input {
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modal-body input:focus,
+.modal-body textarea:focus,
+.modal-body select:focus,
+.quick-note-input:focus {
+  border-color: var(--sandy-primary);
+  box-shadow: 0 0 0 0.25rem rgba(244, 164, 96, 0.25);
+  outline: 0;
+}
+
+/* Animation and transitions */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: none;
+}
+
+/* Dark mode overrides with improved contrast */
+.dark-mode .list-group-item {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.dark-mode .form-check-input {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .card-subtitle.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.dark-mode .bg-primary {
+  background-color: var(--sandy-primary) !important;
+}
+
+.dark-mode .bg-primary.bg-opacity-10 {
+  background-color: rgba(244, 164, 96, 0.2) !important;
+}
+
+.dark-mode .bg-success.bg-opacity-10 {
+  background-color: rgba(233, 150, 122, 0.2) !important;
+}
+
+.dark-mode .bg-warning.bg-opacity-10 {
+  background-color: rgba(210, 180, 140, 0.2) !important;
+}
+
+.dark-mode .bg-info.bg-opacity-10 {
+  background-color: rgba(244, 164, 96, 0.15) !important;
+}
+
+.dark-mode .bg-danger.bg-opacity-10 {
+  background-color: rgba(184, 115, 51, 0.2) !important;
+}
+
+/* Priority badge colors - Sandy Brown theme */
+.badge.bg-danger { background-color: var(--sandy-accent) !important; } /* High priority */
+.badge.bg-warning { background-color: var(--sandy-primary) !important; } /* Medium priority */
+.badge.bg-info { background-color: var(--sandy-primary-light) !important; } /* Low priority */
+.badge.bg-primary { background-color: var(--sandy-primary) !important; }
+.badge.bg-secondary { background-color: var(--sandy-secondary) !important; }
+
+/* Button customization */
+.btn-primary {
+  background-color: var(--sandy-primary) !important;
+  border-color: var(--sandy-primary-dark) !important;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+  background-color: var(--sandy-primary-dark) !important;
+  border-color: var(--sandy-accent) !important;
+}
+
+/* Dark mode badge visibility improvements */
+.dark-mode .badge {
+  color: #212529 !important;
+  font-weight: 600;
+}
+
+/* Dropdown menu dark mode improvements */
+.dark-mode .dropdown-menu {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .dropdown-item {
+  color: var(--text-color);
+}
+
+.dark-mode .dropdown-divider {
+  border-color: var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  h3.card-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* Stats card icon customization */
+.stats-card .rounded-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.stats-card i {
+  font-size: 1.5rem;
+}
+
+/* Sandy brown button styles */
+.btn-outline-sandy {
+  color: var(--sandy-primary);
+  border-color: var(--sandy-primary);
+  background-color: transparent;
+}
+
+.btn-outline-sandy:hover {
+  color: white;
+  background-color: var(--sandy-primary);
+  border-color: var(--sandy-primary);
+}
+
+.btn-outline-sandy.active {
+  color: white !important;
+  background-color: var(--sandy-primary) !important;
+  border-color: var(--sandy-primary-dark) !important;
+}
+
+/* Dark mode button overrides */
+.dark-mode .btn-outline-sandy {
+  color: var(--sandy-primary);
+  border-color: var(--sandy-primary);
+}
+
+.dark-mode .btn-outline-sandy:hover,
+.dark-mode .btn-outline-sandy.active {
+  color: #212529 !important;
+  background-color: var(--sandy-primary) !important;
+  border-color: var(--sandy-primary-dark) !important;
+}
+
+/* Upcoming tasks styling */
+.upcoming-task-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+
+.upcoming-task-icon i {
+  font-size: 0.9rem;
+}
+
+.upcoming-task-title {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.upcoming-task-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.upcoming-task-badge {
+  font-size: 0.7rem;
+  padding: 0.25em 0.6em;
+  font-weight: 500;
+}

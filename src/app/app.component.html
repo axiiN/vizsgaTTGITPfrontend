@@ -1,0 +1,10 @@
+<ng-container *ngIf="isAuthRoute; else dashboard">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<ng-template #dashboard>
+  <app-dashboard-layout></app-dashboard-layout>
+</ng-template>
+
+<!-- Global Confirmation Modal -->
+<app-confirmation-modal></app-confirmation-modal>

@@ -1,0 +1,58 @@
+.app-bar {
+  height: 60px;
+  padding: 0 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+}
+
+.sidebar-toggle i {
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+.navbar-brand {
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-right: 1.5rem;
+}
+
+.page-title h4 {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.dropdown-menu-end {
+  right: 0;
+  left: auto;
+}
+
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+}
+
+.user-dropdown i {
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  color: var(--text-color);
+}
+
+@media (max-width: 991.98px) {
+  .sidebar-toggle {
+    display: block;
+  }
+  
+  .page-title h4 {
+    font-size: 1.1rem;
+  }
+} 

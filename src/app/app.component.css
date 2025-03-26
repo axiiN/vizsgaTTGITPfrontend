@@ -1,0 +1,8 @@
+/* Bootstrap Icons already imported in styles.css */
+
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
