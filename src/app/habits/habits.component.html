@@ -11,9 +11,6 @@
               <p class="mb-0">Build consistent habits and track your progress</p>
             </div>
             <div class="col-md-4 text-md-end">
-              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addHabitModal">
-                <i class="bi bi-plus-circle me-2"></i>Add New Habit
-              </button>
             </div>
           </div>
         </div>
@@ -29,8 +26,8 @@
         title="Total Habits" 
         [value]="habitsList.length" 
         icon="bi-calendar2-check" 
-        bgColor="rgba(244, 164, 96, 0.2)" 
-        iconColor="var(--sandy-primary)">
+        bgColor="rgba(46, 204, 113, 0.2)" 
+        iconColor="#2ecc71">
       </app-stat-card>
     </div>
 
@@ -40,8 +37,8 @@
         title="Daily Habits" 
         [value]="getDailyHabitsCount()" 
         icon="bi-calendar-day" 
-        bgColor="rgba(233, 150, 122, 0.2)" 
-        iconColor="var(--sandy-secondary)">
+        bgColor="rgba(46, 204, 113, 0.2)" 
+        iconColor="#2ecc71">
       </app-stat-card>
     </div>
 
@@ -51,8 +48,8 @@
         title="Weekly Habits" 
         [value]="getWeeklyHabitsCount()" 
         icon="bi-calendar-week" 
-        bgColor="rgba(210, 180, 140, 0.2)" 
-        iconColor="var(--sandy-primary-dark)">
+        bgColor="rgba(46, 204, 113, 0.2)" 
+        iconColor="#2ecc71">
       </app-stat-card>
     </div>
 
@@ -62,8 +59,8 @@
         title="Completed Today" 
         [value]="getCompletedTodayCount()" 
         icon="bi-check2-circle" 
-        bgColor="rgba(184, 115, 51, 0.2)" 
-        iconColor="var(--sandy-accent)">
+        bgColor="rgba(46, 204, 113, 0.2)" 
+        iconColor="#2ecc71">
       </app-stat-card>
     </div>
   </div>
@@ -223,7 +220,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add New Habit</h5>
+
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">

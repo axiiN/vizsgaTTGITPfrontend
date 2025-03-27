@@ -11,9 +11,6 @@
               <p class="mb-0 text-white">Manage your tasks and boost your productivity</p>
             </div>
             <div class="col-md-4 text-md-end">
-              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                <i class="bi bi-plus-circle me-2"></i>Add New Task
-              </button>
             </div>
           </div>
         </div>
@@ -29,8 +26,8 @@
         title="Total Tasks" 
         [value]="tasksList.length" 
         icon="bi-list-check" 
-        bgColor="rgba(244, 164, 96, 0.2)" 
-        iconColor="var(--sandy-primary)">
+        bgColor="rgba(212, 163, 115, 0.2)" 
+        iconColor="#d4a373">
       </app-stat-card>
     </div>
 
@@ -40,8 +37,8 @@
         title="Completed" 
         [value]="getCompletedTasksCount()" 
         icon="bi-check2-all" 
-        bgColor="rgba(233, 150, 122, 0.2)" 
-        iconColor="var(--sandy-secondary)">
+        bgColor="rgba(212, 163, 115, 0.2)" 
+        iconColor="#d4a373">
       </app-stat-card>
     </div>
 
@@ -51,8 +48,8 @@
         title="Due Today" 
         [value]="getDueTasksCount()" 
         icon="bi-calendar-date" 
-        bgColor="rgba(210, 180, 140, 0.2)" 
-        iconColor="var(--sandy-primary-dark)">
+        bgColor="rgba(212, 163, 115, 0.2)" 
+        iconColor="#d4a373">
       </app-stat-card>
     </div>
 
@@ -62,8 +59,8 @@
         title="Overdue" 
         [value]="getOverdueTasksCount()" 
         icon="bi-exclamation-circle" 
-        bgColor="rgba(184, 115, 51, 0.2)" 
-        iconColor="var(--sandy-accent)">
+        bgColor="rgba(212, 163, 115, 0.2)" 
+        iconColor="#d4a373">
       </app-stat-card>
     </div>
   </div>

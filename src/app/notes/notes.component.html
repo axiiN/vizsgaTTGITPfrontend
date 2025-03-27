@@ -11,7 +11,7 @@
               <p class="mb-0">Capture your thoughts and ideas in one place</p>
             </div>
             <div class="col-md-4 text-md-end">
-              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+              <button class="btn btn-light" style="color: black;" data-bs-toggle="modal" data-bs-target="#addNoteModal">
                 <i class="bi bi-plus-circle me-2"></i>Add New Note
               </button>
             </div>
@@ -29,8 +29,8 @@
         title="Total Notes" 
         [value]="entries.length" 
         icon="bi-journal-text" 
-        bgColor="rgba(244, 164, 96, 0.2)" 
-        iconColor="var(--sandy-primary)">
+        bgColor="rgba(13, 110, 253, 0.2)" 
+        iconColor="var(--bs-primary)">
       </app-stat-card>
     </div>
 
@@ -40,8 +40,8 @@
         title="This Month" 
         [value]="getNotesThisMonth()" 
         icon="bi-calendar-date" 
-        bgColor="rgba(233, 150, 122, 0.2)" 
-        iconColor="var(--sandy-secondary)">
+        bgColor="rgba(13, 110, 253, 0.2)" 
+        iconColor="var(--bs-primary)">
       </app-stat-card>
     </div>
 
@@ -51,8 +51,8 @@
         title="Last Added" 
         [value]="getLastAddedDate()" 
         icon="bi-clock-history" 
-        bgColor="rgba(210, 180, 140, 0.2)" 
-        iconColor="var(--sandy-primary-dark)">
+        bgColor="rgba(13, 110, 253, 0.2)" 
+        iconColor="var(--bs-primary)">
       </app-stat-card>
     </div>
 
@@ -62,8 +62,8 @@
         title="Total Words" 
         [value]="getTotalWords()" 
         icon="bi-card-text" 
-        bgColor="rgba(184, 115, 51, 0.2)" 
-        iconColor="var(--sandy-accent)">
+        bgColor="rgba(13, 110, 253, 0.2)" 
+        iconColor="var(--bs-primary)">
       </app-stat-card>
     </div>
   </div>
@@ -72,7 +72,7 @@
   <div class="row">
     <!-- Notes List -->
     <div class="col-lg-8 mb-4">
-      <div class="card border-0 shadow-sm">
+      <div class="card border-0 shadow-sm" style="min-height: 400px; max-height: 800px; overflow-y: auto;">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h5 class="card-title mb-0">My Notes</h5>
