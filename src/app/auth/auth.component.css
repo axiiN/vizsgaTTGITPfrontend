@@ -15,18 +15,6 @@
   box-shadow: var(--card-shadow);
 }
 
-.nagy {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-image: url("../assets/background.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
 
 .auth-container {
   display: flex;

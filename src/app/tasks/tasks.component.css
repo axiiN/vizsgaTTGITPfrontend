@@ -28,7 +28,7 @@
   cursor: pointer;
 }
 
-/* List item styling with consistent border-radius and padding */
+/* List item styling */
 .list-group-item {
   border-radius: 8px !important;
   background-color: var(--bg-secondary);
@@ -37,11 +37,12 @@
   border: 1px solid var(--border-color);
 }
 
-/* Ensure checkbox alignment is consistent */
+/* Checkbox alignment */
 .form-check {
   display: flex;
   align-items: center;
 }
+
 
 .form-check-input {
   background-color: var(--bg-secondary);
@@ -54,6 +55,7 @@
   background-color: var(--sandy-primary);
   border-color: var(--sandy-primary);
 }
+
 
 .form-check-label {
   margin-left: 0.5rem;
@@ -103,7 +105,7 @@
   border-radius: 4px;
 }
 
-/* Quick form controls with consistent styling */
+/* Quick form controls */
 .quick-note-input {
   border: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
@@ -130,7 +132,7 @@
   opacity: 1;
 }
 
-/* Modal form controls with consistent sizing */
+/* Modal form controls */
 .note-form-control {
   border: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
@@ -191,7 +193,7 @@ select.quick-note-input {
   transform: none;
 }
 
-/* Dark mode overrides with improved contrast */
+/* Dark mode override */
 .dark-mode .list-group-item {
   background-color: var(--bg-tertiary);
   border-color: var(--border-color);
@@ -249,13 +251,13 @@ select.quick-note-input {
   border-color: var(--sandy-accent) !important;
 }
 
-/* Dark mode badge visibility improvements */
+/* Dark mode badge */
 .dark-mode .badge {
   color: #212529 !important;
   font-weight: 600;
 }
 
-/* Dropdown menu dark mode improvements */
+/* Dropdown menu dark mode */
 .dark-mode .dropdown-menu {
   background-color: var(--bg-secondary);
   border-color: var(--border-color);

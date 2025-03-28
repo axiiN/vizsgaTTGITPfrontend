@@ -18,13 +18,13 @@
   --accent-color: #4a6cf7;
   --placeholder-color: #6c757d;
   
-  /* Consistent form control variables */
+  /* Form control variables */
   --input-padding: 0.5rem 0.75rem;
   --input-border-radius: 6px;
   --input-border-color: #dee2e6;
   --input-font-size: 0.9rem;
   
-  /* Consistent card variables */
+  /* card variables */
   --card-border-radius: 12px;
   --card-padding: 1rem;
   --card-stats-padding: 0.6rem;
@@ -53,7 +53,7 @@
   --accent-color: #6282f8;
   --placeholder-color: #adb5bd;
   
-  /* Consistent form control variables for dark mode */
+  /* Form control variables for dark mode */
   --input-border-color: #333333;
 }
 
@@ -245,7 +245,7 @@ html, body {
   color: #212529 !important;
 }
 
-/* Make list items consistent in dark mode */
+/*List items in dark mode */
 .dark-mode .list-group-item {
   background-color: var(--bg-tertiary);
   border-color: var(--border-color);

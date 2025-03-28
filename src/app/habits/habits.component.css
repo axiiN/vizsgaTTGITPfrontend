@@ -84,7 +84,7 @@
   border-radius: 4px;
 }
 
-/* Quick form controls with consistent styling */
+/* Quick form controls */
 .quick-note-input {
   border: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
@@ -111,7 +111,7 @@
   opacity: 1;
 }
 
-/* Modal form controls with consistent sizing */
+/* Modal form controls */
 .note-form-control {
   border: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
@@ -172,7 +172,7 @@ select.quick-note-input {
   transform: none;
 }
 
-/* Dark mode overrides with improved contrast */
+/* Dark mode overrides  */
 .dark-mode .list-group-item {
   background-color: var(--bg-tertiary);
   border-color: var(--border-color);
@@ -208,13 +208,13 @@ select.quick-note-input {
   background-color: rgba(13, 202, 240, 0.2) !important;
 }
 
-/* Dark mode badge visibility improvements */
+/* Dark mode badge  */
 .dark-mode .badge {
   color: #212529 !important; 
   font-weight: 600;
 }
 
-/* Dropdown menu dark mode improvements */
+/* Dropdown menu dark mode */
 .dark-mode .dropdown-menu {
   background-color: var(--bg-secondary);
   border-color: var(--border-color);
