@@ -3,17 +3,12 @@
   <!-- Header Section with Background -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="card border-0 bg-primary text-white">
+      <div class="card border-0 bg-primary text-white notes-header">
         <div class="card-body p-4">
           <div class="row align-items-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <h2 class="mb-2">My Notes</h2>
               <p class="mb-0">Capture your thoughts and ideas in one place</p>
-            </div>
-            <div class="col-md-4 text-md-end">
-              <button class="btn btn-light" style="color: black;" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                <i class="bi bi-plus-circle me-2"></i>Add New Note
-              </button>
             </div>
           </div>
         </div>
@@ -21,112 +16,70 @@
     </div>
   </div>
 
-  <!-- Stats Row -->
-  <div class="row mb-3">
-    <!-- Total Notes Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Total Notes" 
-        [value]="entries.length" 
-        icon="bi-journal-text" 
-        bgColor="rgba(13, 110, 253, 0.2)" 
-        iconColor="var(--bs-primary)">
-      </app-stat-card>
-    </div>
-
-    <!-- This Month Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="This Month" 
-        [value]="getNotesThisMonth()" 
-        icon="bi-calendar-date" 
-        bgColor="rgba(13, 110, 253, 0.2)" 
-        iconColor="var(--bs-primary)">
-      </app-stat-card>
-    </div>
-
-    <!-- Last Added Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Last Added" 
-        [value]="getLastAddedDate()" 
-        icon="bi-clock-history" 
-        bgColor="rgba(13, 110, 253, 0.2)" 
-        iconColor="var(--bs-primary)">
-      </app-stat-card>
-    </div>
-
-    <!-- Words Count Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Total Words" 
-        [value]="getTotalWords()" 
-        icon="bi-card-text" 
-        bgColor="rgba(13, 110, 253, 0.2)" 
-        iconColor="var(--bs-primary)">
-      </app-stat-card>
-    </div>
-  </div>
-
-  <!-- Main Content Area -->
+  <!-- Reordered content for mobile view -->
   <div class="row">
-    <!-- Notes List -->
-    <div class="col-lg-8 mb-4">
-      <div class="card border-0 shadow-sm" style="min-height: 400px; max-height: 800px; overflow-y: auto;">
+    <!-- Notes List - First on mobile -->
+    <div class="col-12 col-lg-8 mb-4 order-1 order-lg-2">
+      <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="card-title mb-0">My Notes</h5>
-            <div class="btn-group">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+            <h5 class="card-title mb-2 mb-md-0">My Notes</h5>
+            <div class="btn-group filter-buttons">
               <button class="btn btn-outline-secondary btn-sm" [class.active]="activeFilter === 'all'" (click)="filterNotes('all')">All</button>
               <button class="btn btn-outline-secondary btn-sm" [class.active]="activeFilter === 'recent'" (click)="filterNotes('recent')">Recent</button>
               <button class="btn btn-outline-secondary btn-sm" [class.active]="activeFilter === 'favorites'" (click)="filterNotes('favorites')">Favorites</button>
             </div>
           </div>
           
+          <!-- Loading indicator -->
+          <div *ngIf="isLoading" class="text-center p-3">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading notes...</p>
+          </div>
+          
           <!-- No Notes Message -->
-          <div *ngIf="getFilteredNotes().length === 0" class="text-center p-5">
+          <div *ngIf="!isLoading && getFilteredNotes().length === 0" class="text-center p-3">
             <i class="bi bi-journal-x text-muted" style="font-size: 3rem;"></i>
             <h5 class="mt-3">No notes found</h5>
             <p class="text-muted">
-              <ng-container *ngIf="entries.length === 0">Start by adding a new note using the button above.</ng-container>
+              <ng-container *ngIf="entries.length === 0">Start by adding a new note using the form <span class="d-none d-lg-inline">on the right</span><span class="d-inline d-lg-none">below</span>.</ng-container>
               <ng-container *ngIf="entries.length > 0 && activeFilter === 'favorites'">You haven't marked any notes as favorite yet.</ng-container>
             </p>
           </div>
           
-          <!-- Notes Cards -->
-          <div class="row g-3">
-            <div *ngFor="let entry of getFilteredNotes()" class="col-md-6">
+          <!-- Notes Cards - Single column on small screens -->
+          <div *ngIf="!isLoading" class="row g-3">
+            <div *ngFor="let entry of getFilteredNotes()" class="col-12 col-sm-6">
               <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body">
-                  <div class="d-flex justify-content-between mb-2">
-                    <h5 class="card-title">{{ entry.title }}</h5>
-                    <div class="d-flex align-items-center">
-                      <button 
-                        class="btn btn-link favorite-btn me-2" 
-                        [class.text-warning]="entry.isFavorite" 
-                        [class.text-muted]="!entry.isFavorite" 
-                        (click)="toggleFavorite(entry, $event)" 
-                        title="{{ entry.isFavorite ? 'Remove from favorites' : 'Add to favorites' }}">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title mb-0 text-truncate pe-2">
+                      {{ entry.title }}
+                    </h5>
+                    <div class="d-flex">
+                      <button class="btn btn-link text-warning p-0 me-2" (click)="toggleFavorite(entry, $event)" title="{{ entry.isFavorite ? 'Remove from favorites' : 'Mark as favorite' }}">
                         <i class="bi" [ngClass]="entry.isFavorite ? 'bi-star-fill' : 'bi-star'"></i>
                       </button>
-                      <div class="dropdown">
+                      <div class="dropdown d-inline-block">
                         <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown">
                           <i class="bi bi-three-dots-vertical"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                          <li><a class="dropdown-item" (click)="openEditModal(entry)"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                          <li><a class="dropdown-item" (click)="toggleFavorite(entry)">
+                          <li class="w-100"><button class="dropdown-item w-100" (click)="openEditModal(entry)" data-bs-toggle="modal" data-bs-target="#editNoteModal"><i class="bi bi-pencil me-2"></i>Edit</button></li>
+                          <li class="w-100"><button class="dropdown-item w-100" (click)="toggleFavorite(entry)">
                             <i class="bi me-2" [ngClass]="entry.isFavorite ? 'bi-star-fill text-warning' : 'bi-star'"></i>
-                            {{ entry.isFavorite ? 'Remove from favorites' : 'Add to favorites' }}
-                          </a></li>
+                            {{ entry.isFavorite ? 'Remove from favorites' : 'Mark as favorite' }}
+                          </button></li>
                           <li><hr class="dropdown-divider"></li>
-                          <li><a class="dropdown-item text-danger" (click)="openDeleteConfirmation(entry)"><i class="bi bi-trash me-2"></i>Delete</a></li>
+                          <li class="w-100"><button class="dropdown-item w-100 text-danger" (click)="openDeleteConfirmation(entry)"><i class="bi bi-trash me-2"></i>Delete</button></li>
                         </ul>
                       </div>
                     </div>
                   </div>
-                  <h6 class="card-subtitle mb-2 text-muted">{{ entry.timestamp | date: 'MMM d, yyyy' }}</h6>
-                  <p class="card-text">{{ entry.content | slice:0:100 }}{{ entry.content.length > 100 ? '...' : '' }}</p>
+                  <p class="card-text">{{ entry.content }}</p>
+                  <small class="text-muted">{{ entry.createdAt | date: 'dd/MM/yy, h:mm a' }}</small>
                 </div>
               </div>
             </div>
@@ -135,58 +88,162 @@
       </div>
     </div>
 
-    <!-- Sidebar with Additional Info -->
-    <div class="col-lg-4">
-      <!-- Recent Activity Card -->
-      <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body">
-          <h5 class="card-title mb-4">Recent Activity</h5>
-          <div *ngIf="getRecentNotes().length === 0" class="text-center p-3">
-            <p class="text-muted mb-0">No recent activity</p>
-          </div>
-          <div *ngFor="let note of getRecentNotes()" class="d-flex align-items-center mb-3">
-            <div class="flex-shrink-0">
-              <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
-                <i class="bi bi-pencil text-primary"></i>
-              </div>
-            </div>
-            <div class="flex-grow-1 ms-3">
-              <div class="d-flex align-items-center">
-                <h6 class="mb-0">{{ note.title }}</h6>
-                <i *ngIf="note.isFavorite" class="bi bi-star-fill text-warning ms-2" style="font-size: 0.8rem;"></i>
-              </div>
-              <small class="text-muted">{{ note.timestamp | date: 'MMM d, h:mm a' }}</small>
-            </div>
-          </div>
+    <!-- Stats Cards - Second on mobile -->
+    <div class="col-12 mb-4 order-2 d-lg-none">
+      <div class="row">
+        <!-- Total Notes Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Total Notes" 
+            [value]="entries.length" 
+            icon="bi-journal-text" 
+            bgColor="rgba(70, 130, 180, 0.2)" 
+            iconColor="var(--blue-primary)">
+          </app-stat-card>
+        </div>
+
+        <!-- This Month Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="This Month" 
+            [value]="getNotesThisMonth()" 
+            icon="bi-calendar-date" 
+            bgColor="rgba(100, 149, 237, 0.2)" 
+            iconColor="var(--blue-secondary)">
+          </app-stat-card>
+        </div>
+
+        <!-- Last Added Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Last Added" 
+            [value]="getLastAddedDate()" 
+            icon="bi-clock-history" 
+            bgColor="rgba(65, 105, 225, 0.2)" 
+            iconColor="rgba(135, 206, 250, 0.9)">
+          </app-stat-card>
+        </div>
+
+        <!-- Words Count Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Total Words" 
+            [value]="getTotalWords()" 
+            icon="bi-card-text" 
+            bgColor="rgba(30, 144, 255, 0.2)" 
+            iconColor="var(--blue-accent)">
+          </app-stat-card>
         </div>
       </div>
+    </div>
 
-      <!-- Write New Note Card -->
-      <div class="card border-0 shadow-sm">
+    <!-- Stats Row - Desktop view only -->
+    <div class="row mb-3 d-none d-lg-flex order-lg-1">
+      <!-- Total Notes Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Total Notes" 
+          [value]="entries.length" 
+          icon="bi-journal-text" 
+          bgColor="rgba(70, 130, 180, 0.2)" 
+          iconColor="var(--blue-primary)">
+        </app-stat-card>
+      </div>
+
+      <!-- This Month Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="This Month" 
+          [value]="getNotesThisMonth()" 
+          icon="bi-calendar-date" 
+          bgColor="rgba(100, 149, 237, 0.2)" 
+          iconColor="var(--blue-secondary)">
+        </app-stat-card>
+      </div>
+
+      <!-- Last Added Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Last Added" 
+          [value]="getLastAddedDate()" 
+          icon="bi-clock-history" 
+          bgColor="rgba(65, 105, 225, 0.2)" 
+          iconColor="rgba(135, 206, 250, 0.9)">
+        </app-stat-card>
+      </div>
+
+      <!-- Words Count Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Total Words" 
+          [value]="getTotalWords()" 
+          icon="bi-card-text" 
+          bgColor="rgba(30, 144, 255, 0.2)" 
+          iconColor="var(--blue-accent)">
+        </app-stat-card>
+      </div>
+    </div>
+
+    <!-- Sidebar - Right on desktop, below on mobile -->
+    <div class="col-12 col-lg-4 mb-4 order-3 order-lg-3">
+      <!-- Quick Note Card -->
+      <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
-          <h5 class="card-title mb-3">Quick Note</h5>
+          <h5 class="card-title mb-3">Create Note</h5>
           <div class="mb-3">
-    <input
-      [(ngModel)]="newEntryTitle"
+            <input
+              [(ngModel)]="newEntryTitle"
               class="form-control quick-note-input mb-2"
-      type="text"
-      placeholder="Title"
-    />
-      <textarea
-        [(ngModel)]="newEntryContent"
+              type="text"
+              placeholder="Title"
+            />
+            <textarea
+              [(ngModel)]="newEntryContent"
               class="form-control quick-note-input"
               rows="4"
               placeholder="Write your note here..."
-      ></textarea>
+            ></textarea>
           </div>
-          <button (click)="createEntry()" class="btn btn-primary w-100">
-            <i class="bi bi-save me-2"></i>Save Note
+          <button (click)="createEntry()" class="btn btn-primary w-100" [disabled]="isLoading || !newEntryTitle || !newEntryContent">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isLoading" class="bi bi-save me-2"></i>Save Note
           </button>
+        </div>
+      </div>
+      
+      <!-- Recent Activity Card -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-4">Recent Activity</h5>
+          <div *ngIf="isLoading" class="text-center p-3">
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+          <div *ngIf="!isLoading && getRecentNotes().length === 0" class="text-center p-3">
+            <p class="text-muted mb-0">No recent activity</p>
+          </div>
+          <div *ngIf="!isLoading" class="activity-list">
+            <div *ngFor="let note of getRecentNotes()" class="d-flex align-items-center mb-3">
+              <div class="flex-shrink-0">
+                <div class="bg-primary bg-opacity-10 p-2 rounded-circle">
+                  <i class="bi bi-pencil text-primary"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <div class="d-flex align-items-center">
+                  <h6 class="mb-0 text-truncate">{{ note.title }}</h6>
+                  <i *ngIf="note.isFavorite" class="bi bi-star-fill text-warning ms-2" style="font-size: 0.8rem;"></i>
+                </div>
+                <small class="text-muted">{{ note.createdAt | date: 'dd/MM/yy, h:mm a' }}</small>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
+</div>
 
 <!-- Add Note Modal -->
 <div class="modal fade" id="addNoteModal" tabindex="-1">
@@ -210,7 +267,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="createModalEntry()" data-bs-dismiss="modal">Save Note</button>
+        <button type="button" class="btn btn-primary" (click)="createModalEntry()" data-bs-dismiss="modal" [disabled]="isLoading || !modalNoteTitle || !modalNoteContent">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <i *ngIf="!isLoading" class="bi bi-save me-2"></i>Save Note
+        </button>
       </div>
     </div>
   </div>
@@ -225,7 +285,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form *ngIf="currentEditNote">
           <div class="mb-3">
             <label for="editNoteTitle" class="form-label">Note Title</label>
             <input [(ngModel)]="editNoteTitle" name="editNoteTitle" type="text" class="form-control note-form-control" id="editNoteTitle">
@@ -238,7 +298,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="updateCurrentNote()" data-bs-dismiss="modal">Update Note</button>
+        <button type="button" class="btn btn-primary" (click)="updateCurrentNote()" data-bs-dismiss="modal" [disabled]="isLoading || !editNoteTitle || !editNoteContent">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <i *ngIf="!isLoading" class="bi bi-check2 me-2"></i>Update Note
+        </button>
       </div>
     </div>
   </div>

@@ -13,9 +13,9 @@ export class SidebarComponent implements OnInit {
   @Input() pageTitle: string = '';
   
   navigationItems = [
-    { route: '/notes', icon: 'bi bi-journal', label: 'Notes' },
+    { route: '/habits', icon: 'bi bi-calendar-check', label: 'Habits' },
     { route: '/tasks', icon: 'bi bi-check2-square', label: 'Tasks' },
-    { route: '/habits', icon: 'bi bi-calendar-check', label: 'Habits' }
+    { route: '/notes', icon: 'bi bi-journal', label: 'Notes' }
   ];
   
   constructor(

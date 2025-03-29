@@ -11,10 +11,15 @@
   z-index: 1000;
   background-color: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
+  transition: transform 0.3s ease, width 0.3s ease;
 }
 
-.sidebar-container.collapsed {
-  width: 70px;
+/* Only apply collapse styling on mobile/tablet */
+@media (max-width: 991.98px) {
+  .sidebar-container.collapsed {
+    transform: translateX(-100%);
+    width: 250px; /* Keep full width when off-canvas */
+  }
 }
 
 .main-content {
@@ -24,6 +29,7 @@
   overflow: hidden;
   position: relative;
   background-color: var(--bg-primary);
+  transition: margin-left 0.3s ease;
 }
 
 .content-area {
@@ -39,7 +45,7 @@
   position: fixed;
   top: 1rem;
   right: 1rem;
-  z-index: 1000;
+  z-index: 1050; /* Higher than sidebar */
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -49,34 +55,67 @@
   line-height: 40px;
   cursor: pointer;
   color: var(--text-color);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-toggle-btn:hover {
+  background-color: var(--bg-secondary);
 }
 
 .mobile-toggle-btn i {
   font-size: 1.5rem;
-  vertical-align: middle;
 }
 
+/* Tablet breakpoint */
 @media (max-width: 991.98px) {
   .sidebar-container {
     position: fixed;
     height: 100vh;
     transform: translateX(0);
-  }
-  
-  .sidebar-container.collapsed {
-    transform: translateX(-100%);
-    width: 250px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   }
   
   .dashboard-layout.sidebar-collapsed .main-content {
     margin-left: 0;
+    width: 100%;
   }
   
   .content-area {
     padding: 1rem;
+    width: 100%;
   }
   
   .mobile-toggle-btn {
-    display: block;
+    display: flex;
+  }
+}
+
+/* Mobile breakpoint */
+@media (max-width: 767.98px) {
+  .content-area {
+    padding: 0.75rem;
+  }
+  
+  .mobile-toggle-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .mobile-toggle-btn i {
+    font-size: 1.25rem;
+  }
+}
+
+/* Support for very small devices */
+@media (max-width: 575.98px) {
+  .content-area {
+    padding: 0.5rem;
   }
 } 

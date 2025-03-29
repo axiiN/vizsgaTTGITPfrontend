@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { Subject } from 'rxjs';
@@ -15,6 +15,8 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   sidebarCollapsed = false;
   pageTitle = '';
   private destroy$ = new Subject<void>();
+  private readonly DESKTOP_BREAKPOINT = 992; // Bootstrap lg breakpoint
+  private isDesktopView = false; // Track the current view type
 
   constructor(
     private auth: AuthService,
@@ -51,6 +53,9 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
     ).subscribe(data => {
       this.pageTitle = data['title'] || this.getDefaultTitle();
     });
+
+    // Check initial screen size
+    this.checkScreenSize();
   }
 
   ngOnDestroy(): void {
@@ -58,8 +63,38 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // Listen for window resize events
+  @HostListener('window:resize')
+  onResize() {
+    const wasDesktop = this.isDesktopView;
+    const isNowDesktop = window.innerWidth >= this.DESKTOP_BREAKPOINT;
+    
+    // If transitioning between desktop and mobile, handle appropriately
+    if (wasDesktop !== isNowDesktop) {
+      console.log(`Screen size transition: ${wasDesktop ? 'Desktop->Mobile' : 'Mobile->Desktop'}`);
+    }
+    
+    this.checkScreenSize();
+  }
+
+  // Check if we're on desktop and ensure sidebar is expanded
+  private checkScreenSize(): void {
+    this.isDesktopView = window.innerWidth >= this.DESKTOP_BREAKPOINT;
+    
+    if (this.isDesktopView) {
+      // On desktop, always show sidebar
+      this.sidebarCollapsed = false;
+    } else {
+      // On mobile/tablet, collapse sidebar by default
+      this.sidebarCollapsed = true;
+    }
+  }
+
   toggleSidebar(): void {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
+    // Only allow toggle on mobile devices
+    if (window.innerWidth < this.DESKTOP_BREAKPOINT) {
+      this.sidebarCollapsed = !this.sidebarCollapsed;
+    }
   }
 
   // Get default title based on current URL if no title is provided in route data

@@ -3,14 +3,12 @@
   <!-- Header Section with Background -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="card border-0" style="background-color: var(--sandy-primary);">
+      <div class="card border-0 tasks-header">
         <div class="card-body p-4">
           <div class="row align-items-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <h2 class="mb-2 text-white">My Tasks</h2>
               <p class="mb-0 text-white">Manage your tasks and boost your productivity</p>
-            </div>
-            <div class="col-md-4 text-md-end">
             </div>
           </div>
         </div>
@@ -18,75 +16,79 @@
     </div>
   </div>
 
-  <!-- Stats Row -->
-  <div class="row mb-3">
-    <!-- Total Tasks Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Total Tasks" 
-        [value]="tasksList.length" 
-        icon="bi-list-check" 
-        bgColor="rgba(212, 163, 115, 0.2)" 
-        iconColor="#d4a373">
-      </app-stat-card>
-    </div>
-
-    <!-- Completed Tasks Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Completed" 
-        [value]="getCompletedTasksCount()" 
-        icon="bi-check2-all" 
-        bgColor="rgba(212, 163, 115, 0.2)" 
-        iconColor="#d4a373">
-      </app-stat-card>
-    </div>
-
-    <!-- Due Today Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Due Today" 
-        [value]="getDueTasksCount()" 
-        icon="bi-calendar-date" 
-        bgColor="rgba(212, 163, 115, 0.2)" 
-        iconColor="#d4a373">
-      </app-stat-card>
-    </div>
-
-    <!-- Overdue Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Overdue" 
-        [value]="getOverdueTasksCount()" 
-        icon="bi-exclamation-circle" 
-        bgColor="rgba(212, 163, 115, 0.2)" 
-        iconColor="#d4a373">
-      </app-stat-card>
-    </div>
-  </div>
-
-  <!-- Main Content Area -->
+  <!-- Reordered content for mobile view -->
   <div class="row">
-    <!-- Tasks List -->
-    <div class="col-lg-8 mb-4">
+    <!-- Tasks List - First on mobile -->
+    <div class="col-12 col-lg-8 mb-4 order-1 order-lg-2">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="card-title mb-0">My Tasks</h5>
-            <div class="d-flex align-items-center">
-              <button class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+          <!-- Combined row for title, filters, and buttons -->
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-3">
+            <!-- Left section: Title and Add Button (on mobile) -->
+            <div class="d-flex justify-content-between align-items-center mb-2 mb-lg-0">
+              <h5 class="card-title mb-0">My Tasks</h5>
+              <!-- Add Task Button - Icon only (mobile only, first row) -->
+              <button class="btn btn-primary btn-sm d-inline-block d-lg-none" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+            
+            <!-- Desktop Right Section (Show Completed, Add New Button, Filter Buttons) -->
+            <div class="d-none d-lg-flex align-items-center">
+              <!-- Desktop Order: 1. Show Completed -->
+              <div class="form-check form-switch me-3">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="showCompletedToggle" 
+                  [(ngModel)]="showCompleted"
+                  role="switch"
+                >
+                <label class="form-check-label small" for="showCompletedToggle">
+                  Show Completed
+                </label>
+              </div>
+              
+              <!-- Desktop Order: 2. Add New Button -->
+              <button class="btn btn-primary btn-sm me-3" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                 <i class="bi bi-plus-circle me-1"></i> Add Task
               </button>
-              <div class="btn-group">
-                <button class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'all'" (click)="filterTasks('all')">All</button>
-                <button class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'today'" (click)="filterTasks('today')">Today</button>
-                <button class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'week'" (click)="filterTasks('week')">Week</button>
+              
+              <!-- Desktop Order: 3. Filter Buttons -->
+              <div class="btn-group" role="group" aria-label="Filter tasks">
+                <button type="button" class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'all'" (click)="filterTasks('all')">All</button>
+                <button type="button" class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'today'" (click)="filterTasks('today')">Today</button>
+                <button type="button" class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'week'" (click)="filterTasks('week')">Week</button>
+              </div>
+            </div>
+            
+            <!-- Mobile Only: Second Row (Show Completed and Filter Buttons) -->
+            <div class="d-flex d-lg-none justify-content-end align-items-center">
+              <!-- Mobile Filter Buttons -->
+              <div class="btn-group me-2" role="group" aria-label="Filter tasks">
+                <button type="button" class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'all'" (click)="filterTasks('all')">All</button>
+                <button type="button" class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'today'" (click)="filterTasks('today')">Today</button>
+                <button type="button" class="btn btn-outline-sandy btn-sm" [class.active]="activeFilter === 'week'" (click)="filterTasks('week')">Week</button>
+              </div>
+              
+              <!-- Mobile Show Completed -->
+              <div class="form-check form-switch">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="showCompletedToggleMobile" 
+                  [(ngModel)]="showCompleted"
+                  role="switch"
+                >
+                <label class="form-check-label small" for="showCompletedToggleMobile">
+                  Show Completed
+                </label>
               </div>
             </div>
           </div>
           
           <!-- Loading indicator -->
-          <div *ngIf="isLoading" class="text-center p-5">
+          <div *ngIf="isLoading" class="text-center p-3">
             <div class="spinner-border" role="status" style="color: var(--sandy-primary);">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -94,7 +96,7 @@
           </div>
           
           <!-- No Tasks Message -->
-          <div *ngIf="!isLoading && getFilteredTasks().length === 0" class="text-center p-5">
+          <div *ngIf="!isLoading && getFilteredTasks().length === 0" class="text-center p-3">
             <i class="bi bi-list-check text-muted" style="font-size: 3rem;"></i>
             <h5 class="mt-3">No tasks found</h5>
             <p class="text-muted">
@@ -140,8 +142,104 @@
       </div>
     </div>
 
-    <!-- Sidebar with Additional Info -->
-    <div class="col-lg-4">
+    <!-- Stats Cards - Second on mobile -->
+    <div class="col-12 mb-4 order-2 d-lg-none">
+      <div class="row">
+        <!-- Total Tasks Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Total Tasks" 
+            [value]="tasksList.length" 
+            icon="bi-list-check" 
+            bgColor="rgba(244, 164, 96, 0.2)" 
+            iconColor="var(--sandy-primary)">
+          </app-stat-card>
+        </div>
+
+        <!-- Completed Tasks Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Completed" 
+            [value]="getCompletedTasksCount()" 
+            icon="bi-check2-all" 
+            bgColor="rgba(233, 150, 122, 0.2)" 
+            iconColor="var(--sandy-secondary)">
+          </app-stat-card>
+        </div>
+
+        <!-- Due Today Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Due Today" 
+            [value]="getDueTasksCount()" 
+            icon="bi-calendar-date" 
+            bgColor="rgba(210, 180, 140, 0.2)" 
+            iconColor="var(--sandy-primary-dark)">
+          </app-stat-card>
+        </div>
+
+        <!-- Overdue Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Overdue" 
+            [value]="getOverdueTasksCount()" 
+            icon="bi-exclamation-circle" 
+            bgColor="rgba(184, 115, 51, 0.2)" 
+            iconColor="var(--sandy-accent)">
+          </app-stat-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row - Desktop view only -->
+    <div class="row mb-3 d-none d-lg-flex order-lg-1">
+      <!-- Total Tasks Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Total Tasks" 
+          [value]="tasksList.length" 
+          icon="bi-list-check" 
+          bgColor="rgba(244, 164, 96, 0.2)" 
+          iconColor="var(--sandy-primary)">
+        </app-stat-card>
+      </div>
+
+      <!-- Completed Tasks Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Completed" 
+          [value]="getCompletedTasksCount()" 
+          icon="bi-check2-all" 
+          bgColor="rgba(233, 150, 122, 0.2)" 
+          iconColor="var(--sandy-secondary)">
+        </app-stat-card>
+      </div>
+
+      <!-- Due Today Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Due Today" 
+          [value]="getDueTasksCount()" 
+          icon="bi-calendar-date" 
+          bgColor="rgba(210, 180, 140, 0.2)" 
+          iconColor="var(--sandy-primary-dark)">
+        </app-stat-card>
+      </div>
+
+      <!-- Overdue Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Overdue" 
+          [value]="getOverdueTasksCount()" 
+          icon="bi-exclamation-circle" 
+          bgColor="rgba(184, 115, 51, 0.2)" 
+          iconColor="var(--sandy-accent)">
+        </app-stat-card>
+      </div>
+    </div>
+
+    <!-- Sidebar - Right on desktop, below on mobile -->
+    <div class="col-12 col-lg-4 mb-4 order-3 order-lg-3">
       <!-- Upcoming Tasks Card -->
       <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
@@ -184,24 +282,26 @@
               name="quickTaskName"
             />
             <select 
-              class="form-control quick-note-input mb-2"
+              class="form-select quick-note-input mb-2"
               [(ngModel)]="quickTaskPriority"
               name="quickTaskPriority"
             >
               <option value="" disabled selected>Select priority</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
               <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
             </select>
             <input
-              type="date"
               class="form-control quick-note-input"
+              type="date"
+              placeholder="Due date"
               [(ngModel)]="quickTaskDueDate"
               name="quickTaskDueDate"
             />
           </div>
-          <button class="btn btn-primary w-100" (click)="addQuickTask()">
-            <i class="bi bi-plus-circle me-2"></i>Add Task
+          <button (click)="addQuickTask()" class="btn btn-primary w-100" [disabled]="isLoading || !quickTaskName || !quickTaskPriority || !quickTaskDueDate">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isLoading" class="bi bi-plus-circle me-2"></i>Add Task
           </button>
         </div>
       </div>

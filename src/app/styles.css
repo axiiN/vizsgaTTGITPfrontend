@@ -1,0 +1,33 @@
+/* Global dropdown menu improvements */
+.dropdown-menu {
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
+}
+
+.dropdown-item {
+  border-radius: 0.25rem;
+  margin: 0 0.25rem;
+  width: calc(100% - 0.5rem);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.dropdown-item:active {
+  background-color: var(--sandy-primary);
+  color: #fff;
+}
+
+.dark-mode .dropdown-menu {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .dropdown-item {
+  color: var(--text-color);
+}
+
+.dark-mode .dropdown-item:active {
+  background-color: var(--sandy-primary);
+  color: #212529;
+} 

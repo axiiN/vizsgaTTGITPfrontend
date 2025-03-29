@@ -3,14 +3,12 @@
   <!-- Header Section with Background -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="card border-0 bg-success text-white">
+      <div class="card border-0 bg-success text-white habits-header">
         <div class="card-body p-4">
           <div class="row align-items-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <h2 class="mb-2">My Habits</h2>
               <p class="mb-0">Build consistent habits and track your progress</p>
-            </div>
-            <div class="col-md-4 text-md-end">
             </div>
           </div>
         </div>
@@ -18,63 +16,16 @@
     </div>
   </div>
 
-  <!-- Stats Row -->
-  <div class="row mb-3">
-    <!-- Total Habits Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Total Habits" 
-        [value]="habitsList.length" 
-        icon="bi-calendar2-check" 
-        bgColor="rgba(46, 204, 113, 0.2)" 
-        iconColor="#2ecc71">
-      </app-stat-card>
-    </div>
-
-    <!-- Daily Habits Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Daily Habits" 
-        [value]="getDailyHabitsCount()" 
-        icon="bi-calendar-day" 
-        bgColor="rgba(46, 204, 113, 0.2)" 
-        iconColor="#2ecc71">
-      </app-stat-card>
-    </div>
-
-    <!-- Weekly Habits Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Weekly Habits" 
-        [value]="getWeeklyHabitsCount()" 
-        icon="bi-calendar-week" 
-        bgColor="rgba(46, 204, 113, 0.2)" 
-        iconColor="#2ecc71">
-      </app-stat-card>
-    </div>
-
-    <!-- Completed Today Card -->
-    <div class="col-md-3 col-sm-6 mb-2">
-      <app-stat-card 
-        title="Completed Today" 
-        [value]="getCompletedTodayCount()" 
-        icon="bi-check2-circle" 
-        bgColor="rgba(46, 204, 113, 0.2)" 
-        iconColor="#2ecc71">
-      </app-stat-card>
-    </div>
-  </div>
-
-  <!-- Main Content Area -->
+  <!-- Reordered content for mobile view -->
   <div class="row">
-    <!-- Habits List -->
-    <div class="col-lg-8 mb-4">
+    <!-- Habits List - First on mobile -->
+    <div class="col-12 col-lg-8 mb-4 order-1 order-lg-2">
       <div class="card border-0 shadow-sm">
         <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="card-title mb-0">My Habits</h5>
-            <div class="d-flex align-items-center">
-              <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#addHabitModal">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+            <h5 class="card-title mb-2 mb-md-0">My Habits</h5>
+            <div class="d-flex align-items-center flex-wrap">
+              <button class="btn btn-success btn-sm me-2 mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#addHabitModal">
                 <i class="bi bi-plus-circle me-1"></i> Add Habit
               </button>
               <div class="btn-group">
@@ -86,7 +37,7 @@
           </div>
           
           <!-- Loading indicator -->
-          <div *ngIf="isLoading" class="text-center p-5">
+          <div *ngIf="isLoading" class="text-center p-3">
             <div class="spinner-border text-success" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -94,7 +45,7 @@
           </div>
           
           <!-- No Habits Message -->
-          <div *ngIf="!isLoading && getFilteredHabits().length === 0" class="text-center p-5">
+          <div *ngIf="!isLoading && getFilteredHabits().length === 0" class="text-center p-3">
             <i class="bi bi-calendar2-check text-muted" style="font-size: 3rem;"></i>
             <h5 class="mt-3">No habits found</h5>
             <p class="text-muted">
@@ -141,8 +92,104 @@
       </div>
     </div>
 
-    <!-- Sidebar with Additional Info -->
-    <div class="col-lg-4">
+    <!-- Stats Cards - Second on mobile -->
+    <div class="col-12 mb-4 order-2 d-lg-none">
+      <div class="row">
+        <!-- Total Habits Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Total Habits" 
+            [value]="habitsList.length" 
+            icon="bi-calendar2-check" 
+            bgColor="rgba(60, 179, 113, 0.2)" 
+            iconColor="var(--green-primary)">
+          </app-stat-card>
+        </div>
+
+        <!-- Daily Habits Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Daily Habits" 
+            [value]="getDailyHabitsCount()" 
+            icon="bi-calendar-day" 
+            bgColor="rgba(152, 251, 152, 0.2)" 
+            iconColor="var(--green-secondary)">
+          </app-stat-card>
+        </div>
+
+        <!-- Weekly Habits Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Weekly Habits" 
+            [value]="getWeeklyHabitsCount()" 
+            icon="bi-calendar-week" 
+            bgColor="rgba(46, 139, 87, 0.2)" 
+            iconColor="var(--green-primary-dark)">
+          </app-stat-card>
+        </div>
+
+        <!-- Completed Today Card -->
+        <div class="col-6 col-md-3 mb-2">
+          <app-stat-card 
+            title="Completed Today" 
+            [value]="getCompletedTodayCount()" 
+            icon="bi-check2-circle" 
+            bgColor="rgba(0, 139, 69, 0.2)" 
+            iconColor="var(--green-accent)">
+          </app-stat-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row - Desktop view only -->
+    <div class="row mb-3 d-none d-lg-flex order-lg-1">
+      <!-- Total Habits Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Total Habits" 
+          [value]="habitsList.length" 
+          icon="bi-calendar2-check" 
+          bgColor="rgba(60, 179, 113, 0.2)" 
+          iconColor="var(--green-primary)">
+        </app-stat-card>
+      </div>
+
+      <!-- Daily Habits Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Daily Habits" 
+          [value]="getDailyHabitsCount()" 
+          icon="bi-calendar-day" 
+          bgColor="rgba(152, 251, 152, 0.2)" 
+          iconColor="var(--green-secondary)">
+        </app-stat-card>
+      </div>
+
+      <!-- Weekly Habits Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Weekly Habits" 
+          [value]="getWeeklyHabitsCount()" 
+          icon="bi-calendar-week" 
+          bgColor="rgba(46, 139, 87, 0.2)" 
+          iconColor="var(--green-primary-dark)">
+        </app-stat-card>
+      </div>
+
+      <!-- Completed Today Card -->
+      <div class="col-md-3 mb-2">
+        <app-stat-card 
+          title="Completed Today" 
+          [value]="getCompletedTodayCount()" 
+          icon="bi-check2-circle" 
+          bgColor="rgba(0, 139, 69, 0.2)" 
+          iconColor="var(--green-accent)">
+        </app-stat-card>
+      </div>
+    </div>
+
+    <!-- Sidebar - Right on desktop, below on mobile -->
+    <div class="col-12 col-lg-4 mb-4 order-3 order-lg-3">
       <!-- Habit Streak Card -->
       <div class="card border-0 shadow-sm mb-4">
         <div class="card-body">
@@ -178,14 +225,14 @@
           <h5 class="card-title mb-3">Quick Habit</h5>
           <div class="mb-3">
             <input
-              class="form-control mb-2"
+              class="form-control quick-note-input mb-2"
               type="text"
               placeholder="Habit name"
               [(ngModel)]="quickHabitName"
               name="quickHabitName"
             />
             <select 
-              class="form-control mb-2"
+              class="form-select quick-note-input mb-2"
               [(ngModel)]="quickHabitCategory"
               name="quickHabitCategory"
             >
@@ -197,7 +244,7 @@
               <option value="other">Other</option>
             </select>
             <select 
-              class="form-control"
+              class="form-select quick-note-input"
               [(ngModel)]="quickHabitFrequency"
               name="quickHabitFrequency"
             >
@@ -206,8 +253,9 @@
               <option value="weekly">Weekly</option>
             </select>
           </div>
-          <button class="btn btn-success w-100" (click)="addQuickHabit()">
-            <i class="bi bi-plus-circle me-2"></i>Add Habit
+          <button class="btn btn-success w-100" (click)="addQuickHabit()" [disabled]="isLoading || !quickHabitName || !quickHabitCategory || !quickHabitFrequency">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            <i *ngIf="!isLoading" class="bi bi-plus-circle me-2"></i>Add Habit
           </button>
         </div>
       </div>
@@ -220,7 +268,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-
+        <h5 class="modal-title">Add New Habit</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">

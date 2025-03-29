@@ -14,6 +14,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HabitsComponent } from './habits/habits.component';
 import { LayoutModule } from './layout/layout.module';
+import { NavigationComponent } from './navigation/navigation.component';
 import { NotesComponent } from './notes/notes.component';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
@@ -22,6 +23,7 @@ import { TasksComponent } from './tasks/tasks.component';
 @NgModule({
   declarations: [
     AppComponent,
+    NavigationComponent,
     AuthComponent,
     NotesComponent,
     TasksComponent,

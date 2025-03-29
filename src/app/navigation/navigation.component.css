@@ -1,0 +1,19 @@
+.navbar-brand {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.sidenav {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
+}
+
+.greeting {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 20px;
+}

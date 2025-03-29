@@ -38,7 +38,7 @@ export class AppComponent implements OnInit, OnDestroy {
                           event.url.includes('/register') || 
                           event.url.includes('/auth');
         
-        // If we're on the auth route and already logged in, redirect to notes
+        // If we're on the auth route and already logged in, redirect to habits
         if (this.isAuthRoute) {
           this.authService.getCurrentUser()
             .pipe(takeUntil(this.destroy$))
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
                           event.url === '/login' || 
                           event.url === '/register' || 
                           event.url === '/auth')) {
-                this.router.navigate(['/notes']);
+                this.router.navigate(['/habits']);
               }
             });
         }

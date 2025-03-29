@@ -3,28 +3,44 @@
 @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css');
 
 :root {
-  /* Light mode variables */
+  /* Base colors */
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
-  --bg-tertiary: #e9ecef;
-  --text-color: #343a40;
+  --card-bg: #ffffff;
+  --text-color: #212529;
   --text-muted: #6c757d;
   --border-color: #dee2e6;
-  --card-bg: #ffffff;
   --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  --hover-bg: rgba(0, 0, 0, 0.05);
-  --primary-color: #0d6efd;
-  --primary-color-rgb: 13, 110, 253;
-  --accent-color: #4a6cf7;
-  --placeholder-color: #6c757d;
+  --placeholder-color: #adb5bd;
   
-  /* Form control variables */
+  /* Sandy-brown theme (Tasks) */
+  --sandy-primary: #F4A460;
+  --sandy-primary-light: #FFDAB9;
+  --sandy-primary-dark: #D2691E;
+  --sandy-secondary: #E9967A;
+  --sandy-accent: #B87333;
+  
+  /* Blue theme (Notes) */
+  --blue-primary: #4682B4;
+  --blue-primary-light: #B0C4DE;
+  --blue-primary-dark: #104E8B;
+  --blue-secondary: #6495ED;
+  --blue-accent: #1E90FF;
+  
+  /* Green theme (Habits) */
+  --green-primary: #3CB371;
+  --green-primary-light: #98FB98;
+  --green-primary-dark: #2E8B57;
+  --green-secondary: #66CDAA;
+  --green-accent: #008B45;
+  
+  /* Consistent form control variables */
   --input-padding: 0.5rem 0.75rem;
   --input-border-radius: 6px;
   --input-border-color: #dee2e6;
   --input-font-size: 0.9rem;
   
-  /* card variables */
+  /* Consistent card variables */
   --card-border-radius: 12px;
   --card-padding: 1rem;
   --card-stats-padding: 0.6rem;
@@ -39,21 +55,40 @@
 
 .dark-mode {
   /* Dark mode variables */
-  --bg-primary: #121212;
-  --bg-secondary: #1e1e1e;
-  --bg-tertiary: #2d2d2d;
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252525;
+  --card-bg: #2d2d2d;
   --text-color: #e0e0e0;
-  --text-muted: #adb5bd;
-  --border-color: #333333;
-  --card-bg: #242424;
+  --text-muted: #aaaaaa;
+  --border-color: #4d4d4d;
   --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
   --hover-bg: rgba(255, 255, 255, 0.05);
   --primary-color: #3d8bfd;
   --primary-color-rgb: 61, 139, 253;
   --accent-color: #6282f8;
-  --placeholder-color: #adb5bd;
   
-  /* Form control variables for dark mode */
+  /* Sandy-brown theme (Tasks) - Dark mode */
+  --sandy-primary: #D2691E;
+  --sandy-primary-light: #CD853F;
+  --sandy-primary-dark: #A0522D;
+  --sandy-secondary: #B8860B;
+  --sandy-accent: #DAA520;
+  
+  /* Blue theme (Notes) - Dark mode */
+  --blue-primary: #4682B4;
+  --blue-primary-light: #5F9EA0;
+  --blue-primary-dark: #104E8B;
+  --blue-secondary: #4169E1;
+  --blue-accent: #1E90FF;
+  
+  /* Green theme (Habits) - Dark mode */
+  --green-primary: #2E8B57;
+  --green-primary-light: #3CB371;
+  --green-primary-dark: #006400;
+  --green-secondary: #008B8B;
+  --green-accent: #00CED1;
+  
+  /* Consistent form control variables for dark mode */
   --input-border-color: #333333;
 }
 
@@ -81,6 +116,31 @@ html, body {
 .container-fluid {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+/* Global form control consistency */
+.form-control,
+.form-select,
+select.form-control {
+  min-height: 38px;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+}
+
+/* Global form-select styling to avoid duplicate arrows */
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  padding-right: 2rem;
+}
+
+/* Quick note inputs and selects consistency */
+.quick-note-input {
+  min-height: 38px !important;
+  padding: 0.375rem 0.75rem !important;
 }
 
 /* Form controls consistency */
@@ -150,6 +210,7 @@ html, body {
 
 .stats-card .card-title {
   font-size: var(--stats-card-title-size);
+  font-weight: 400;
   line-height: 1.1;
   margin-top: 0.1rem;
   margin-bottom: 0;
@@ -245,7 +306,7 @@ html, body {
   color: #212529 !important;
 }
 
-/*List items in dark mode */
+/* Make list items consistent in dark mode */
 .dark-mode .list-group-item {
   background-color: var(--bg-tertiary);
   border-color: var(--border-color);
@@ -288,6 +349,7 @@ html, body {
   
   .stats-card .card-title {
     font-size: calc(var(--stats-card-title-size) * 1.1);
+    font-weight: 400;
   }
 }
 
@@ -314,4 +376,180 @@ html, body {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
   color: white;
+}
+
+/* Ensure select controls have consistent styling with inputs */
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  padding-right: 2rem;
+}
+
+/* Dark mode select dropdown arrow */
+.dark-mode select.form-control,
+.dark-mode .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23adb5bd' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Global Mobile Responsive Improvements */
+@media (max-width: 991.98px) {
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  h4 {
+    font-size: 1.3rem;
+  }
+  
+  h5 {
+    font-size: 1.1rem;
+  }
+  
+  .btn-group {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem !important;
+  }
+  
+  .mb-3 {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.3rem;
+  }
+  
+  h4 {
+    font-size: 1.2rem;
+  }
+  
+  h5 {
+    font-size: 1rem;
+  }
+  
+  .btn {
+    padding: 0.375rem 0.5rem;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Improve filter button groups on mobile */
+  .btn-group {
+    gap: 0.25rem;
+  }
+  
+  .btn-group .btn {
+    margin-bottom: 0.25rem;
+    border-radius: 0.25rem !important;
+  }
+  
+  /* Adjust stats cards on mobile */
+  .stats-card .rounded-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .stats-card i {
+    font-size: 1rem;
+  }
+  
+  .stats-card .card-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container-fluid {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .py-4 {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+  
+  .mb-4 {
+    margin-bottom: 0.75rem !important;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+  }
+  
+  /* Improve mobile card layout */
+  .card {
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Adjust form controls for mobile */
+  .form-control, 
+  .form-select,
+  .quick-note-input {
+    font-size: 0.9rem;
+    padding: 0.35rem 0.5rem;
+  }
+  
+  /* Make dropdowns more touch-friendly */
+  .dropdown-item {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* Better spacing for button groups */
+  .d-flex.justify-content-between {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  /* Fix button alignment issues */
+  .d-flex.justify-content-between .btn-group,
+  .d-flex.justify-content-between .btn {
+    margin-left: 0;
+  }
 }

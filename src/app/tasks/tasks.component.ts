@@ -10,8 +10,9 @@ import { TasksService } from '../services/tasks.service';
 })
 export class TasksComponent implements OnInit {
   tasksList: Task[] = [];
-  activeFilter: 'all' | 'today' | 'week' = 'all';
+  activeFilter: 'all' | 'today' | 'week' = 'today';
   isLoading: boolean = false;
+  showCompleted: boolean = false; // Hide completed tasks by default
 
   // Quick task form
   quickTaskName: string = '';
@@ -324,6 +325,16 @@ export class TasksComponent implements OnInit {
       });
     }
     
+    // Filter out completed tasks if showCompleted is false
+    if (!this.showCompleted) {
+      filteredTasks = filteredTasks.filter(task => !task.completed);
+    }
+    
     return filteredTasks;
+  }
+
+  // Add a method to toggle the showCompleted property
+  toggleShowCompleted(): void {
+    this.showCompleted = !this.showCompleted;
   }
 }

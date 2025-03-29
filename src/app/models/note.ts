@@ -2,6 +2,8 @@ export interface Note {
   id?: string;
   title: string;
   content: string;
-  timestamp: number;
+  createdAt?: number;
+  updatedAt?: number;
+  timestamp?: number; // Keep for backward compatibility
   isFavorite?: boolean;
 }

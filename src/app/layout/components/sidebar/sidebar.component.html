@@ -11,7 +11,14 @@
   <div class="sidebar-content">
     <ul class="nav flex-column">
       <li class="nav-item" *ngFor="let item of navigationItems">
-        <a class="nav-link" [routerLink]="item.route" routerLinkActive="active">
+        <a class="nav-link" 
+           [routerLink]="item.route" 
+           routerLinkActive="active"
+           [ngClass]="{
+             'notes-link': item.route === '/notes',
+             'tasks-link': item.route === '/tasks',
+             'habits-link': item.route === '/habits'
+           }">
           <i [class]="item.icon"></i>
           <span>{{ item.label }}</span>
         </a>
