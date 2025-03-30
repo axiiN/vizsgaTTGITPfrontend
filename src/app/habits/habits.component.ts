@@ -15,6 +15,15 @@ export class HabitsComponent implements OnInit {
   activeFilter: 'all' | 'today' | 'week' = 'today';
   isLoading: boolean = false;
   
+  // Category icons mapping
+  categoryIcons = {
+    'health': '🏠',
+    'fitness': '💪',
+    'productivity': '📈',
+    'mindfulness': '🧘',
+    'other': '📋'
+  };
+  
   // Quick habit form
   quickHabitName: string = '';
   quickHabitCategory: string = '';
@@ -107,8 +116,8 @@ export class HabitsComponent implements OnInit {
   toggleHabitCompletion(habit: Habit): void {
     if (!habit.id) return;
     
-    const completed = !habit.completed;
-    this.habitsService.toggleHabitCompletion(habit.id, completed).subscribe({
+    // Use the new completeHabit method which doesn't require a payload
+    this.habitsService.completeHabit(habit.id).subscribe({
       next: (updatedHabit) => {
         const index = this.habitsList.findIndex(h => h.id === habit.id);
         if (index !== -1) {
@@ -116,7 +125,7 @@ export class HabitsComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Error toggling habit completion:', error);
+        console.error('Error completing habit:', error);
       }
     });
   }
@@ -207,7 +216,6 @@ export class HabitsComponent implements OnInit {
   getTopStreakHabits(): Habit[] {
     // Sort habits by streak and return the top 3
     return [...this.habitsList]
-      .filter(habit => (habit.streak || 0) > 0)
       .sort((a, b) => (b.streak || 0) - (a.streak || 0))
       .slice(0, 3);
   }
@@ -238,5 +246,10 @@ export class HabitsComponent implements OnInit {
       });
     }
     return this.habitsList;
+  }
+
+  // Get the icon for a specific category
+  getCategoryIcon(category: string): string {
+    return this.categoryIcons[category as keyof typeof this.categoryIcons] || '📋';
   }
 }

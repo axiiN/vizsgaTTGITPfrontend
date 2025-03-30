@@ -551,3 +551,42 @@ select.form-control,
     font-size: 0.7rem;
   }
 }
+
+/* Time input styling to match date inputs */
+input[type="time"].quick-note-input,
+input[type="time"].note-form-control {
+  min-height: 38px;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-color);
+  border-radius: 6px;
+}
+
+.dark-mode input[type="time"].quick-note-input,
+.dark-mode input[type="time"].note-form-control {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+/* Add styling for the date-time row to ensure proper alignment */
+.row.mb-2 {
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.row.mb-2 .col-7,
+.row.mb-2 .col-5 {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* Badge with date and time styling */
+.badge.bg-secondary {
+  font-size: 0.75rem;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.2;
+}

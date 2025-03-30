@@ -3,6 +3,7 @@ export interface Task {
   name: string;              // Required: Task name
   completed: boolean;        // Required: Task completion status
   dueDate: string;           // Required: Due date in YYYY-MM-DD format
+  dueTime?: string;          // Optional: Due time in HH:MM format
   priority: 'high' | 'medium' | 'low';  // Required: Task priority
   description?: string;      // Optional: Task description
   userId?: string;           // Optional: User ID, set by the API

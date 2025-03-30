@@ -65,9 +65,18 @@ export class HabitsService {
   }
 
   /**
-   * Toggle habit completion status
+   * Toggle habit completion status (DEPRECATED - use completeHabit instead)
    */
   toggleHabitCompletion(habitId: string, completed: boolean): Observable<Habit> {
     return this.api.patch<Habit>(this.endpoint, habitId, { completed });
+  }
+
+  /**
+   * Complete a habit using the /habits/:id/complete endpoint
+   * @param habitId The ID of the habit to complete
+   */
+  completeHabit(habitId: string): Observable<Habit> {
+    const customPath = `${this.endpoint}/${habitId}/complete`;
+    return this.api.patchCustomPath<Habit>(customPath, {});
   }
 }

@@ -124,7 +124,9 @@
               </div>
               <div class="d-flex align-items-center">
                 <span class="badge me-2" [ngClass]="getPriorityBadgeClass(task.priority)">{{task.priority}}</span>
-                <span class="badge bg-secondary rounded-pill me-2">{{formatDate(task.dueDate)}}</span>
+                <span class="badge bg-secondary rounded-pill me-2">
+                  {{formatDateTime(task.dueDate, task.dueTime)}}
+                </span>
                 <div class="dropdown">
                   <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-three-dots-vertical"></i>
@@ -261,7 +263,7 @@
               </div>
               <div class="flex-grow-1 ms-2">
                 <h6 class="upcoming-task-title">{{task.name}}</h6>
-                <small class="upcoming-task-date">{{getRelativeDueDate(task.dueDate)}}</small>
+                <small class="upcoming-task-date">{{getRelativeDueDate(task.dueDate, task.dueTime)}}</small>
               </div>
               <span class="badge upcoming-task-badge" [ngClass]="getPriorityBadgeClass(task.priority)">{{task.priority}}</span>
             </div>
@@ -291,13 +293,26 @@
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </select>
-            <input
-              class="form-control quick-note-input"
-              type="date"
-              placeholder="Due date"
-              [(ngModel)]="quickTaskDueDate"
-              name="quickTaskDueDate"
-            />
+            <div class="row mb-2">
+              <div class="col-7">
+                <input
+                  class="form-control quick-note-input"
+                  type="date"
+                  placeholder="Due date"
+                  [(ngModel)]="quickTaskDueDate"
+                  name="quickTaskDueDate"
+                />
+              </div>
+              <div class="col-5">
+                <input
+                  class="form-control quick-note-input"
+                  type="time"
+                  placeholder="Due time"
+                  [(ngModel)]="quickTaskDueTime"
+                  name="quickTaskDueTime"
+                />
+              </div>
+            </div>
           </div>
           <button (click)="addQuickTask()" class="btn btn-primary w-100" [disabled]="isLoading || !quickTaskName || !quickTaskPriority || !quickTaskDueDate">
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -347,15 +362,28 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="dueDate" class="form-label">Due Date</label>
-            <input 
-              type="date" 
-              class="form-control note-form-control" 
-              id="dueDate"
-              [(ngModel)]="modalTaskDueDate"
-              name="modalTaskDueDate"
-              required
-            >
+            <label class="form-label">Due Date & Time</label>
+            <div class="row">
+              <div class="col-7">
+                <input 
+                  type="date" 
+                  class="form-control note-form-control" 
+                  id="dueDate"
+                  [(ngModel)]="modalTaskDueDate"
+                  name="modalTaskDueDate"
+                  required
+                >
+              </div>
+              <div class="col-5">
+                <input 
+                  type="time" 
+                  class="form-control note-form-control" 
+                  id="dueTime"
+                  [(ngModel)]="modalTaskDueTime"
+                  name="modalTaskDueTime"
+                >
+              </div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="taskDescription" class="form-label">Description (Optional)</label>
@@ -415,15 +443,28 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="editDueDate" class="form-label">Due Date</label>
-            <input 
-              type="date" 
-              class="form-control note-form-control" 
-              id="editDueDate"
-              [(ngModel)]="editingTask.dueDate"
-              name="editDueDate"
-              required
-            >
+            <label class="form-label">Due Date & Time</label>
+            <div class="row">
+              <div class="col-7">
+                <input 
+                  type="date" 
+                  class="form-control note-form-control" 
+                  id="editDueDate"
+                  [(ngModel)]="editingTask.dueDate"
+                  name="editDueDate"
+                  required
+                >
+              </div>
+              <div class="col-5">
+                <input 
+                  type="time" 
+                  class="form-control note-form-control" 
+                  id="editDueTime"
+                  [(ngModel)]="editingTask.dueTime"
+                  name="editDueTime"
+                >
+              </div>
+            </div>
           </div>
           <div class="mb-3">
             <label for="editTaskDescription" class="form-label">Description (Optional)</label>

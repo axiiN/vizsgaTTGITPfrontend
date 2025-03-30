@@ -131,4 +131,17 @@ export class CoreApiService {
         catchError(this.handleError)
       );
   }
+
+  /**
+   * Generic POST request to a custom path
+   */
+  postCustomPath<T>(customPath: string, data: any = {}): Observable<T> {
+    const url = `${this.apiUrl}/${customPath}`;
+    console.log(`POST Request to custom path: ${url}`, 'with data:', data);
+    return this.http.post<T>(url, data)
+      .pipe(
+        tap(response => console.log(`POST Response from custom path ${url}:`, response)),
+        catchError(this.handleError)
+      );
+  }
 } 

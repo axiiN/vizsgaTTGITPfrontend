@@ -72,9 +72,9 @@
                 </div>
               </div>
               <div class="d-flex align-items-center">
-                <span class="badge bg-success me-2">{{habit.category}}</span>
+                <span class="badge bg-success me-2"><span class="emoji">{{getCategoryIcon(habit.category || 'other')}}</span> {{habit.category}}</span>
                 <span class="badge bg-info rounded-pill me-2">{{habit.frequency}}</span>
-                <span *ngIf="(habit.streak || 0) > 0" class="badge bg-warning rounded-pill me-2">🔥 {{habit.streak}}</span>
+                <span *ngIf="(habit.streak || 0) > 0" class="badge bg-warning rounded-pill me-2"><span class="emoji">🔥</span> {{habit.streak}}</span>
                 <div class="dropdown">
                   <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-three-dots-vertical"></i>
@@ -211,9 +211,8 @@
               </div>
               <div class="flex-grow-1 ms-3">
                 <h6 class="mb-0">{{habit.name}}</h6>
-                <small class="text-muted">{{habit.frequency}} habit</small>
+                <small class="text-muted"><span class="emoji">{{getCategoryIcon(habit.category || 'other')}}</span> {{habit.category}} - {{habit.frequency}} habit</small>
               </div>
-              <span class="badge bg-warning">🔥 {{habit.streak}}</span>
             </div>
           </div>
         </div>
@@ -237,11 +236,11 @@
               name="quickHabitCategory"
             >
               <option value="" disabled selected>Select category</option>
-              <option value="health">Health</option>
-              <option value="fitness">Fitness</option>
-              <option value="productivity">Productivity</option>
-              <option value="mindfulness">Mindfulness</option>
-              <option value="other">Other</option>
+              <option value="health">🏠 Health</option>
+              <option value="fitness">💪 Fitness</option>
+              <option value="productivity">📈 Productivity</option>
+              <option value="mindfulness">🧘 Mindfulness</option>
+              <option value="other">📋 Other</option>
             </select>
             <select 
               class="form-select quick-note-input"
@@ -295,11 +294,11 @@
               required
             >
               <option value="" disabled selected>Select category</option>
-              <option value="health">Health</option>
-              <option value="fitness">Fitness</option>
-              <option value="productivity">Productivity</option>
-              <option value="mindfulness">Mindfulness</option>
-              <option value="other">Other</option>
+              <option value="health">🏠 Health</option>
+              <option value="fitness">💪 Fitness</option>
+              <option value="productivity">📈 Productivity</option>
+              <option value="mindfulness">🧘 Mindfulness</option>
+              <option value="other">📋 Other</option>
             </select>
           </div>
           <div class="mb-3">
@@ -368,11 +367,11 @@
               name="editHabitCategory"
               required
             >
-              <option value="health">Health</option>
-              <option value="fitness">Fitness</option>
-              <option value="productivity">Productivity</option>
-              <option value="mindfulness">Mindfulness</option>
-              <option value="other">Other</option>
+              <option value="health">🏠 Health</option>
+              <option value="fitness">💪 Fitness</option>
+              <option value="productivity">📈 Productivity</option>
+              <option value="mindfulness">🧘 Mindfulness</option>
+              <option value="other">📋 Other</option>
             </select>
           </div>
           <div class="mb-3">
