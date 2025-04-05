@@ -144,37 +144,25 @@ export class TasksComponent implements OnInit {
 
   getDueTasksCount(): number {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Start of today
-    const todayStr = today.toISOString().split('T')[0];
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     
     return this.tasksList.filter(task => {
       if (!task.dueDate || task.completed) return false;
       
-      // If the due date is today
-      if (task.dueDate === todayStr) {
-        return true;
-      }
-      
-      return false;
+      // Simply compare the date strings in YYYY-MM-DD format
+      return task.dueDate === todayStr;
     }).length;
   }
 
   getOverdueTasksCount(): number {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Start of today
-    const todayStr = today.toISOString().split('T')[0];
+    const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     
     return this.tasksList.filter(task => {
       if (!task.dueDate || task.completed) return false;
       
       // If the due date is before today
-      if (task.dueDate < todayStr) {
-        return true;
-      }
-      
-      return false;
+      return task.dueDate < todayStr;
     }).length;
   }
 
@@ -493,15 +481,12 @@ export class TasksComponent implements OnInit {
       filteredTasks = this.tasksList;
     } else if (this.activeFilter === 'today') {
       const today = new Date();
-      today.setHours(0, 0, 0, 0); // Start of today
-      const todayStr = today.toISOString().split('T')[0];
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
       
       filteredTasks = this.tasksList.filter(task => {
         if (!task.dueDate) return false;
         
-        // If the due date is today
+        // Simply compare the date strings in YYYY-MM-DD format
         return task.dueDate === todayStr;
       });
     } else if (this.activeFilter === 'week') {
