@@ -1,6 +1,6 @@
 <div class="dashboard-layout" [class.sidebar-collapsed]="sidebarCollapsed">
   <div class="sidebar-container" [class.collapsed]="sidebarCollapsed">
-    <app-sidebar [user]="user" [pageTitle]="pageTitle"></app-sidebar>
+    <app-sidebar [user]="user" [pageTitle]="pageTitle" (menuItemClicked)="onSidebarMenuItemClicked()"></app-sidebar>
   </div>
   
   <div class="main-content">

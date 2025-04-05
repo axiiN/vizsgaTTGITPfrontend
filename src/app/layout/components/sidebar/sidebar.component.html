@@ -14,6 +14,7 @@
         <a class="nav-link" 
            [routerLink]="item.route" 
            routerLinkActive="active"
+           (click)="onMenuItemClick()"
            [ngClass]="{
              'notes-link': item.route === '/notes',
              'tasks-link': item.route === '/tasks',

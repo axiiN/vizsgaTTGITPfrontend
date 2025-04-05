@@ -97,6 +97,13 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSidebarMenuItemClicked(): void {
+    // Only collapse the sidebar on mobile devices
+    if (window.innerWidth < this.DESKTOP_BREAKPOINT) {
+      this.sidebarCollapsed = true;
+    }
+  }
+
   // Get default title based on current URL if no title is provided in route data
   private getDefaultTitle(): string {
     const url = this.router.url;

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { AuthService } from '../../../services/auth.service';
@@ -11,6 +11,7 @@ import { AuthService } from '../../../services/auth.service';
 export class SidebarComponent implements OnInit {
   @Input() user: firebase.User | null = null;
   @Input() pageTitle: string = '';
+  @Output() menuItemClicked = new EventEmitter<void>();
   
   navigationItems = [
     { route: '/habits', icon: 'bi bi-calendar-check', label: 'Habits' },
@@ -31,6 +32,11 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     // We no longer need to subscribe to getCurrentUser here
     // since we're getting the user from @Input
+  }
+  
+  onMenuItemClick(): void {
+    // Emit an event to notify parent component to collapse sidebar
+    this.menuItemClicked.emit();
   }
   
   getUserInitials(): string {
