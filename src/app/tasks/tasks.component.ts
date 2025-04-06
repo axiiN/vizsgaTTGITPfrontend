@@ -1,4 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  addDays,
+  addHours,
+  differenceInDays,
+  format,
+  isAfter,
+  isBefore,
+  isToday,
+  parse,
+  startOfDay
+} from 'date-fns';
 import { Task } from '../models/task';
 import { AuthService } from '../services/auth.service';
 import { TasksService } from '../services/tasks.service';
@@ -37,18 +48,16 @@ export class TasksComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTasks();
-    // Set default due date to today
-    const today = new Date().toISOString().split('T')[0];
-    this.quickTaskDueDate = today;
-    this.modalTaskDueDate = today;
+    
+    // Set default due date to today using date-fns
+    const now = new Date();
+    this.quickTaskDueDate = format(now, 'yyyy-MM-dd');
+    this.modalTaskDueDate = this.quickTaskDueDate;
     
     // Set default due time to current hour rounded up to nearest hour
-    const now = new Date();
-    now.setMinutes(0, 0, 0); // Reset minutes, seconds, and milliseconds
-    now.setHours(now.getHours() + 1); // Set to next hour
-    const defaultTime = now.toTimeString().substring(0, 5); // Format as HH:MM
-    this.quickTaskDueTime = defaultTime;
-    this.modalTaskDueTime = defaultTime;
+    const nextHour = addHours(now, 1);
+    this.quickTaskDueTime = format(nextHour, 'HH:mm');
+    this.modalTaskDueTime = this.quickTaskDueTime;
   }
   
   loadTasks(): void {
@@ -61,11 +70,9 @@ export class TasksComponent implements OnInit {
             try {
               const dateObj = new Date(task.dueDate);
               
-              // Extract date part in YYYY-MM-DD format
-              const datePart = dateObj.toISOString().split('T')[0];
-              
-              // Extract time part in HH:MM format
-              const timePart = `${String(dateObj.getUTCHours()).padStart(2, '0')}:${String(dateObj.getUTCMinutes()).padStart(2, '0')}`;
+              // Extract date and time parts using date-fns
+              const datePart = format(dateObj, 'yyyy-MM-dd');
+              const timePart = format(dateObj, 'HH:mm');
               
               return {
                 ...task,
@@ -99,12 +106,9 @@ export class TasksComponent implements OnInit {
     
     // Combine date and time if both are provided into a proper ISO string
     if (taskToSend.dueDate && taskToSend.dueTime) {
-      // Parse the date and time parts
-      const [year, month, day] = taskToSend.dueDate.split('-').map(Number);
-      const [hours, minutes] = taskToSend.dueTime.split(':').map(Number);
-      
-      // Create a date object (months are 0-indexed in JavaScript)
-      const dateObj = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
+      // Parse the date and time parts using date-fns
+      const dateTimeStr = `${taskToSend.dueDate} ${taskToSend.dueTime}`;
+      const dateObj = parse(dateTimeStr, 'yyyy-MM-dd HH:mm', new Date());
       
       // Format as complete ISO string
       taskToSend.dueDate = dateObj.toISOString();
@@ -119,11 +123,9 @@ export class TasksComponent implements OnInit {
         if (newTask.dueDate && newTask.dueDate.includes('T')) {
           const dateObj = new Date(newTask.dueDate);
           
-          // Extract date part in YYYY-MM-DD format
-          const datePart = dateObj.toISOString().split('T')[0];
-          
-          // Extract time part in HH:MM format
-          const timePart = `${String(dateObj.getUTCHours()).padStart(2, '0')}:${String(dateObj.getUTCMinutes()).padStart(2, '0')}`;
+          // Extract date and time parts using date-fns
+          const datePart = format(dateObj, 'yyyy-MM-dd');
+          const timePart = format(dateObj, 'HH:mm');
           
           newTask.dueDate = datePart;
           newTask.dueTime = timePart;
@@ -143,26 +145,24 @@ export class TasksComponent implements OnInit {
   }
 
   getDueTasksCount(): number {
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const today = format(new Date(), 'yyyy-MM-dd');
     
     return this.tasksList.filter(task => {
       if (!task.dueDate || task.completed) return false;
       
-      // Simply compare the date strings in YYYY-MM-DD format
-      return task.dueDate === todayStr;
+      // If the due date is today
+      return task.dueDate === today;
     }).length;
   }
 
   getOverdueTasksCount(): number {
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const today = format(new Date(), 'yyyy-MM-dd');
     
     return this.tasksList.filter(task => {
       if (!task.dueDate || task.completed) return false;
       
       // If the due date is before today
-      return task.dueDate < todayStr;
+      return task.dueDate < today;
     }).length;
   }
 
@@ -235,72 +235,78 @@ export class TasksComponent implements OnInit {
   formatDateTime(dateString: string, timeString?: string): string {
     if (!dateString) return '';
     
-    const date = new Date(dateString);
-    
-    // If time is provided, set the time part
-    if (timeString) {
-      const [hours, minutes] = timeString.split(':').map(part => parseInt(part, 10));
-      date.setHours(hours, minutes, 0, 0);
+    try {
+      // If we have both date and time, combine them
+      if (timeString) {
+        const dateTimeStr = `${dateString} ${timeString}`;
+        const dateObj = parse(dateTimeStr, 'yyyy-MM-dd HH:mm', new Date());
+        return format(dateObj, 'MM/dd/yyyy, h:mm a');
+      } else {
+        // Just format the date part
+        const dateObj = parse(dateString, 'yyyy-MM-dd', new Date());
+        return format(dateObj, 'MM/dd/yyyy');
+      }
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return `${dateString} ${timeString || ''}`;
     }
-    
-    // Format as "MM/DD/YYYY, HH:MM AM/PM" or just "MM/DD/YYYY" if no time
-    const options: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'numeric', 
-      day: 'numeric',
-      hour: timeString ? '2-digit' : undefined,
-      minute: timeString ? '2-digit' : undefined
-    };
-    
-    return date.toLocaleString(undefined, options);
   }
 
   formatDate(dateString: string): string {
     if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+    try {
+      const dateObj = parse(dateString, 'yyyy-MM-dd', new Date());
+      return format(dateObj, 'MM/dd/yyyy');
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return dateString;
+    }
   }
 
   getRelativeDueDate(dateString: string, timeString?: string): string {
     if (!dateString) return '';
     
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    const dueDate = new Date(dateString);
-    dueDate.setHours(0, 0, 0, 0);
-    
-    const diffTime = dueDate.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    let result = '';
-    if (diffDays < 0) {
-      result = `Overdue by ${Math.abs(diffDays)} day${Math.abs(diffDays) !== 1 ? 's' : ''}`;
-    } else if (diffDays === 0) {
-      result = 'Due today';
-    } else if (diffDays === 1) {
-      result = 'Due tomorrow';
-    } else {
-      result = `Due in ${diffDays} days`;
+    try {
+      const today = startOfDay(new Date());
+      const dueDate = parse(dateString, 'yyyy-MM-dd', new Date());
+      
+      // Calculate days difference
+      const diffDays = differenceInDays(dueDate, today);
+      
+      let result = '';
+      if (diffDays < 0) {
+        result = `Overdue by ${Math.abs(diffDays)} day${Math.abs(diffDays) !== 1 ? 's' : ''}`;
+      } else if (diffDays === 0) {
+        result = 'Due today';
+      } else if (diffDays === 1) {
+        result = 'Due tomorrow';
+      } else {
+        result = `Due in ${diffDays} days`;
+      }
+      
+      // Add time if provided
+      if (timeString) {
+        result += ` at ${this.formatTimeForDisplay(timeString)}`;
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('Error calculating relative date:', error);
+      return `Due: ${dateString}`;
     }
-    
-    // Add time if provided
-    if (timeString) {
-      result += ` at ${this.formatTimeForDisplay(timeString)}`;
-    }
-    
-    return result;
   }
 
   formatTimeForDisplay(timeString: string): string {
     if (!timeString) return '';
     
-    // Convert 24-hour format to 12-hour format with AM/PM
-    const [hours, minutes] = timeString.split(':').map(part => parseInt(part, 10));
-    const period = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
-    
-    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    try {
+      // Parse the time string and format it with date-fns
+      const timeObj = parse(timeString, 'HH:mm', new Date());
+      return format(timeObj, 'h:mm a');
+    } catch (error) {
+      console.error('Error formatting time:', error);
+      return timeString;
+    }
   }
 
   openEditModal(task: Task): void {
@@ -347,14 +353,14 @@ export class TasksComponent implements OnInit {
     // Reset form
     this.quickTaskName = '';
     this.quickTaskPriority = '';
-    const today = new Date().toISOString().split('T')[0];
-    this.quickTaskDueDate = today;
     
-    // Set default due time to current hour rounded up to nearest hour
+    // Set default due date to today
     const now = new Date();
-    now.setMinutes(0, 0, 0); // Reset minutes, seconds, and milliseconds
-    now.setHours(now.getHours() + 1); // Set to next hour
-    this.quickTaskDueTime = now.toTimeString().substring(0, 5); // Format as HH:MM
+    this.quickTaskDueDate = format(now, 'yyyy-MM-dd');
+    
+    // Set default due time to next hour
+    const nextHour = addHours(now, 1);
+    this.quickTaskDueTime = format(nextHour, 'HH:mm');
   }
 
   addModalTask(): void {
@@ -378,14 +384,14 @@ export class TasksComponent implements OnInit {
     this.modalTaskName = '';
     this.modalTaskPriority = '';
     this.modalTaskDescription = '';
-    const today = new Date().toISOString().split('T')[0];
-    this.modalTaskDueDate = today;
     
-    // Set default due time to current hour rounded up to nearest hour
+    // Set default due date to today
     const now = new Date();
-    now.setMinutes(0, 0, 0); // Reset minutes, seconds, and milliseconds
-    now.setHours(now.getHours() + 1); // Set to next hour
-    this.modalTaskDueTime = now.toTimeString().substring(0, 5); // Format as HH:MM
+    this.modalTaskDueDate = format(now, 'yyyy-MM-dd');
+    
+    // Set default due time to next hour
+    const nextHour = addHours(now, 1);
+    this.modalTaskDueTime = format(nextHour, 'HH:mm');
   }
   
   updateTask(id: string, updatedTask: Partial<Task>): void {
@@ -396,12 +402,9 @@ export class TasksComponent implements OnInit {
     
     // Combine date and time if both are provided into a proper ISO string
     if (taskToUpdate.dueDate && taskToUpdate.dueTime) {
-      // Parse the date and time parts
-      const [year, month, day] = taskToUpdate.dueDate.split('-').map(Number);
-      const [hours, minutes] = taskToUpdate.dueTime.split(':').map(Number);
-      
-      // Create a date object (months are 0-indexed in JavaScript)
-      const dateObj = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0));
+      // Parse the date and time parts using date-fns
+      const dateTimeStr = `${taskToUpdate.dueDate} ${taskToUpdate.dueTime}`;
+      const dateObj = parse(dateTimeStr, 'yyyy-MM-dd HH:mm', new Date());
       
       // Format as complete ISO string
       taskToUpdate.dueDate = dateObj.toISOString();
@@ -416,11 +419,9 @@ export class TasksComponent implements OnInit {
         if (task.dueDate && task.dueDate.includes('T')) {
           const dateObj = new Date(task.dueDate);
           
-          // Extract date part in YYYY-MM-DD format
-          const datePart = dateObj.toISOString().split('T')[0];
-          
-          // Extract time part in HH:MM format
-          const timePart = `${String(dateObj.getUTCHours()).padStart(2, '0')}:${String(dateObj.getUTCMinutes()).padStart(2, '0')}`;
+          // Extract date and time parts using date-fns
+          const datePart = format(dateObj, 'yyyy-MM-dd');
+          const timePart = format(dateObj, 'HH:mm');
           
           task.dueDate = datePart;
           task.dueTime = timePart;
@@ -480,32 +481,30 @@ export class TasksComponent implements OnInit {
     if (this.activeFilter === 'all') {
       filteredTasks = this.tasksList;
     } else if (this.activeFilter === 'today') {
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+      const today = format(new Date(), 'yyyy-MM-dd');
+      
+      filteredTasks = this.tasksList.filter(task => {
+        if (!task.dueDate) return false;
+        return task.dueDate === today;
+      });
+    } else if (this.activeFilter === 'week') {
+      const today = startOfDay(new Date());
+      const nextWeek = addDays(today, 7);
       
       filteredTasks = this.tasksList.filter(task => {
         if (!task.dueDate) return false;
         
-        // Simply compare the date strings in YYYY-MM-DD format
-        return task.dueDate === todayStr;
-      });
-    } else if (this.activeFilter === 'week') {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Start of today
-      
-      const nextWeek = new Date(today);
-      nextWeek.setDate(today.getDate() + 7);
-      nextWeek.setHours(23, 59, 59, 999); // End of the 7th day
-      
-      filteredTasks = this.tasksList.filter(task => {
-        if (!task.dueDate) return false; // Skip tasks with no due date
-        
-        // Convert task.dueDate string to Date object properly
-        const taskDate = new Date(task.dueDate);
-        taskDate.setHours(0, 0, 0, 0);
-        
-        // Check if taskDate is between today and nextWeek (inclusive)
-        return taskDate >= today && taskDate <= nextWeek;
+        try {
+          const taskDate = parse(task.dueDate, 'yyyy-MM-dd', new Date());
+          return (
+            isAfter(taskDate, today) || isToday(taskDate)
+          ) && (
+            isBefore(taskDate, nextWeek) || taskDate.getTime() === nextWeek.getTime()
+          );
+        } catch (error) {
+          console.error('Error parsing date for filter:', error);
+          return false;
+        }
       });
     }
     
